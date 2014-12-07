@@ -26,55 +26,22 @@ public class ClientLogic {
 		}
 	}
 	
-	public void clientSendAndReceive() throws IOException {
+	public void clientSendAndReceive() throws IOException{
 		System.out.println("kurz vorm senden");
 		outStream.writeUTF(userName);
+		Scanner s = new Scanner(System.in);
 
-		Thread receiverThread = new Thread() {
-
-			@Override
-			public void run() {
-				while (true) {
-					try {
-						String received = inStream.readUTF();
-						System.out.println(received + "| Client erhalten");
-					} catch (IOException e) {
-						System.out
-								.println("Nachricht konnte nicht versand werden");
-						e.printStackTrace();
-					}
-					System.out.println("was gesendet");
-				}
-			}
-		};
-		receiverThread.start();
-
-		Thread senderThread = new Thread() {
-
-			@Override
-			public void run() {
-				Scanner s = new Scanner(System.in);
-				while (true) {
-					try {
-						System.out.println("Text eingeben:");
-						outStream.writeUTF("tom<adressee/> " + s.nextLine());
-						System.out.println("was gesendet");
-					} catch (IOException e) {
-						System.out
-								.println("Nachricht konnte nicht versand werden");
-						e.printStackTrace();
-					}
-
-				}
-			}
-		};
-		senderThread.start();
-
-		// outStream.close();
-		// inStream.close();
-		// socket.close();
-	}// clientSendAndReceive
-
+		while(true){
+		//senden an jerry 
+		outStream.writeUTF("jerry<adressee/> "+s.next());
+		System.out.println("was gesendet");
+		String received = inStream.readUTF();
+		System.out.println(received+"| Client erhalten");
+		}
+//		outStream.close();
+//		inStream.close();
+//		socket.close();
+	}
 	
 	
 	public static void main(String args[]) throws Exception{
@@ -86,7 +53,7 @@ public class ClientLogic {
 //		for ( InetAddress ia : InetAddress.getAllByName(localHost) )
 //		  System.out.println( ia );
 		
-		ClientLogic c = new ClientLogic(1025, "jerry");
+		ClientLogic c = new ClientLogic(1025, "tom");
 		System.out.println("client build");
 		c.clientSendAndReceive();
 	}
