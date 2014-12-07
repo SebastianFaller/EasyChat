@@ -10,9 +10,10 @@ public class ClientLogic {
 	private Socket socket;
 	private DataInputStream inStream;
 	private DataOutputStream outStream;
+	private String userName;
 	
-	public ClientLogic(int port){
-		
+	public ClientLogic(int port,String user){
+		userName = user;
 		try {
 			socket = new Socket("localHost", port);
 			inStream = new DataInputStream(socket.getInputStream());
@@ -26,26 +27,34 @@ public class ClientLogic {
 	
 	public void clientSendAndReceive() throws IOException{
 		System.out.println("kurz vorm senden");
-		outStream.writeUTF("Client sendet|");
+		outStream.writeUTF(userName);
+		try {
+			Thread.sleep(10000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		//senden an tom 
+		outStream.writeUTF("tom<adressee/>Hallo Tom!");
 		System.out.println("was gesendet");
 		String received = inStream.readUTF();
 		System.out.println(received+"| Client erhalten");
-		outStream.close();
-		inStream.close();
-		socket.close();
+//		outStream.close();
+//		inStream.close();
+//		socket.close();
 	}
 	
 	
 	public static void main(String args[]) throws Exception{
-		System.out.println( "Host Name/Adresse: " + InetAddress.getLocalHost() );
-		System.out.println(InetAddress.getByName("sebastian-MS-7502").isSiteLocalAddress());
-		System.out.println(InetAddress.getByName("127.0.1.1").isReachable(20000));
-	
-		String localHost = InetAddress.getLocalHost().getHostName();
-		for ( InetAddress ia : InetAddress.getAllByName(localHost) )
-		  System.out.println( ia );
+//		System.out.println( "Host Name/Adresse: " + InetAddress.getLocalHost() );
+//		System.out.println(InetAddress.getByName("sebastian-MS-7502").isSiteLocalAddress());
+//		System.out.println(InetAddress.getByName("127.0.1.1").isReachable(20000));
+//	
+//		String localHost = InetAddress.getLocalHost().getHostName();
+//		for ( InetAddress ia : InetAddress.getAllByName(localHost) )
+//		  System.out.println( ia );
 		
-		ClientLogic c = new ClientLogic(1025);
+		ClientLogic c = new ClientLogic(1025, "jerry");
 		System.out.println("client build");
 		c.clientSendAndReceive();
 	}

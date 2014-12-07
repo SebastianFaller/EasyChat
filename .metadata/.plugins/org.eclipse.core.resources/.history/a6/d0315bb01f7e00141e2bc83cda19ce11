@@ -1,0 +1,17 @@
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.net.Socket;
+
+
+public class ProcessingThread extends Thread{
+
+	private Socket clientSocket;
+	private DataInputStream inStream;
+	private DataOutpuStream outStream; 
+	
+	public ProcessingThread(Socket clieSocket){
+		
+		inStream = new DataInputStream(client.getInputStream());
+		outStream = new DataOutputStream(client.getOutputStream());
+	}
+}
