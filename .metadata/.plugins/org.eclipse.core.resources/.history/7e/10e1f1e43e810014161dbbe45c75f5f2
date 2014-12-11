@@ -38,10 +38,22 @@ public class ClientLogic {
 						System.out
 								.println("Nachricht konnte nicht versand werden");
 						e.printStackTrace();
-						reastablishConnectionIfLost();
 						break;
 					}
 				}//while
+				System.out.println("receiver");
+				System.out.println("Connection to Server lost");
+				System.out.println("reconnect? y/n");
+				if(new Scanner(System.in).next()=="y"){
+					try {
+						
+						connectWithServer("blabala", 1025);
+						this.run();
+					} catch (IOException e) {
+						System.out.println("Connection still not established");
+						e.printStackTrace();
+					}
+				}//if
 			}
 		};
 
@@ -60,12 +72,25 @@ public class ClientLogic {
 						System.out
 								.println("Nachricht konnte nicht versand werden");
 						e.printStackTrace();
-						reastablishConnectionIfLost();
 						break;
 					}
 
 				}//while
 				System.out.println("Sender");
+				System.out.println("Connection to Server lost");
+				System.out.println("reconnect? y/n");
+				if(new Scanner(System.in).next()=="y"){
+					try {
+//						receiverThread.interrupt();
+						connectWithServer("blabala", 1025);
+						this.run();
+					} catch (IOException e) {
+						System.out.println("Connection still not established");
+						e.printStackTrace();
+					}//catch
+				}//if
+
+				
 			}
 
 		};
@@ -84,24 +109,7 @@ public class ClientLogic {
 			socket = new Socket("localHost", port);
 			inStream = new DataInputStream(socket.getInputStream());
 			outStream = new DataOutputStream(socket.getOutputStream());
-	}
-	
-	
-	public synchronized boolean reastablishConnectionIfLost(){
-		System.out.println("Connection to Server lost");
-		System.out.println("reconnect? y/n");
-		if(new Scanner(System.in).next()=="y"){
-			try {
-				connectWithServer("blabala", 1025);
-			} catch (IOException e) {
-				System.out.println("Connection still not established");
-				e.printStackTrace();
-				return false;
-			}//catch
-			return true;
-		}//if
-		else
-
+		
 	}
 	
 	public static void main(String args[]) throws Exception{

@@ -3,10 +3,6 @@ import java.util.Scanner;
 
 
 public abstract class workingThread extends Thread{
-	
-	public workingThread(){
-		
-	}
 
 	@Override
 	public void run() {
@@ -26,27 +22,19 @@ public abstract class workingThread extends Thread{
 			}
 
 		}//while
-
-		
-	}
-	
-	public void workingLoop(){
-		
-	}
-	
-	public void handleDisconnection(){
 		System.out.println("Sender");
 		System.out.println("Connection to Server lost");
 		System.out.println("reconnect? y/n");
 		if(new Scanner(System.in).next()=="y"){
 			try {
 //				receiverThread.interrupt();
-				connectWithServer("blabala", 1025);
+//				connectWithServer("blabala", 1025);
 				this.run();
 			} catch (IOException e) {
 				System.out.println("Connection still not established");
 				e.printStackTrace();
 			}//catch
 		}//if
+		
 	}
 }

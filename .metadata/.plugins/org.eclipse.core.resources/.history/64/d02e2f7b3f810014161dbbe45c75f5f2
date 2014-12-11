@@ -38,7 +38,7 @@ public class ClientLogic {
 						System.out
 								.println("Nachricht konnte nicht versand werden");
 						e.printStackTrace();
-						reastablishConnectionIfLost();
+						connectionLost();
 						break;
 					}
 				}//while
@@ -60,7 +60,7 @@ public class ClientLogic {
 						System.out
 								.println("Nachricht konnte nicht versand werden");
 						e.printStackTrace();
-						reastablishConnectionIfLost();
+						connectionLost();
 						break;
 					}
 
@@ -87,20 +87,19 @@ public class ClientLogic {
 	}
 	
 	
-	public synchronized boolean reastablishConnectionIfLost(){
+	public synchronized void connectionLost(){
 		System.out.println("Connection to Server lost");
 		System.out.println("reconnect? y/n");
 		if(new Scanner(System.in).next()=="y"){
 			try {
+				
 				connectWithServer("blabala", 1025);
+				this.run();
 			} catch (IOException e) {
 				System.out.println("Connection still not established");
 				e.printStackTrace();
-				return false;
 			}//catch
-			return true;
 		}//if
-		else
 
 	}
 	

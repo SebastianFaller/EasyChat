@@ -38,35 +38,27 @@ public class ClientLogic {
 						System.out
 								.println("Nachricht konnte nicht versand werden");
 						e.printStackTrace();
-						reastablishConnectionIfLost();
 						break;
 					}
 				}//while
+				System.out.println("receiver");
+				System.out.println("Connection to Server lost");
+				System.out.println("reconnect? y/n");
+				if(new Scanner(System.in).next()=="y"){
+					try {
+						
+						connectWithServer("blabala", 1025);
+						this.run();
+					} catch (IOException e) {
+						System.out.println("Connection still not established");
+						e.printStackTrace();
+					}
+				}//if
 			}
 		};
 
 		Thread senderThread = new Thread() {
-			@Override
-			public void run() {
-				Scanner s = new Scanner(System.in);
-				while (!isInterrupted()) {
-					try {
-						System.out.println("Empfänger eingeben");
-						String adressee = s.nextLine(); 
-						System.out.println("Text eingeben:");
-						outStream.writeUTF(adressee+"<adressee/> " + s.nextLine());
-						System.out.println("was gesendet");
-					} catch (IOException e) {
-						System.out
-								.println("Nachricht konnte nicht versand werden");
-						e.printStackTrace();
-						reastablishConnectionIfLost();
-						break;
-					}
 
-				}//while
-				System.out.println("Sender");
-			}
 
 		};
 		
@@ -84,24 +76,7 @@ public class ClientLogic {
 			socket = new Socket("localHost", port);
 			inStream = new DataInputStream(socket.getInputStream());
 			outStream = new DataOutputStream(socket.getOutputStream());
-	}
-	
-	
-	public synchronized boolean reastablishConnectionIfLost(){
-		System.out.println("Connection to Server lost");
-		System.out.println("reconnect? y/n");
-		if(new Scanner(System.in).next()=="y"){
-			try {
-				connectWithServer("blabala", 1025);
-			} catch (IOException e) {
-				System.out.println("Connection still not established");
-				e.printStackTrace();
-				return false;
-			}//catch
-			return true;
-		}//if
-		else
-
+		
 	}
 	
 	public static void main(String args[]) throws Exception{
