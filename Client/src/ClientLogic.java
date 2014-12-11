@@ -16,12 +16,9 @@ public class ClientLogic {
 	public ClientLogic(int port,String user){
 		userName = user;
 		try {
-			socket = new Socket("localHost", port);
-			inStream = new DataInputStream(socket.getInputStream());
-			outStream = new DataOutputStream(socket.getOutputStream());
-			
+			connectWithServer("localHost", port);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			System.out.println("Connection failed");
 			e.printStackTrace();
 		}
 	}
@@ -30,8 +27,7 @@ public class ClientLogic {
 		System.out.println("kurz vorm senden");
 		outStream.writeUTF(userName);
 
-		Thread receiverThread = new Thread() {
-
+		final Thread receiverThread = new Thread() {
 			@Override
 			public void run() {
 				while (true) {
@@ -42,32 +38,31 @@ public class ClientLogic {
 						System.out
 								.println("Nachricht konnte nicht versand werden");
 						e.printStackTrace();
+						break;
 					}
-					System.out.println("was gesendet");
-				}
+				}//while
+				System.out.println("receiver");
+				System.out.println("Connection to Server lost");
+				System.out.println("reconnect? y/n");
+				if(new Scanner(System.in).next()=="y"){
+					try {
+						
+						connectWithServer("blabala", 1025);
+						this.run();
+					} catch (IOException e) {
+						System.out.println("Connection still not established");
+						e.printStackTrace();
+					}
+				}//if
 			}
 		};
-		receiverThread.start();
 
 		Thread senderThread = new Thread() {
 
-			@Override
-			public void run() {
-				Scanner s = new Scanner(System.in);
-				while (true) {
-					try {
-						System.out.println("Text eingeben:");
-						outStream.writeUTF("tom<adressee/> " + s.nextLine());
-						System.out.println("was gesendet");
-					} catch (IOException e) {
-						System.out
-								.println("Nachricht konnte nicht versand werden");
-						e.printStackTrace();
-					}
 
-				}
-			}
 		};
+		
+		receiverThread.start();
 		senderThread.start();
 
 		// outStream.close();
@@ -75,7 +70,14 @@ public class ClientLogic {
 		// socket.close();
 	}// clientSendAndReceive
 
-	
+	//TODO Find out what first Arg does
+	//TODO Define own "ConnectionFaileException" or something like that
+	public void connectWithServer(String dontknow, int port) throws IOException{
+			socket = new Socket("localHost", port);
+			inStream = new DataInputStream(socket.getInputStream());
+			outStream = new DataOutputStream(socket.getOutputStream());
+		
+	}
 	
 	public static void main(String args[]) throws Exception{
 //		System.out.println( "Host Name/Adresse: " + InetAddress.getLocalHost() );
@@ -85,8 +87,9 @@ public class ClientLogic {
 //		String localHost = InetAddress.getLocalHost().getHostName();
 //		for ( InetAddress ia : InetAddress.getAllByName(localHost) )
 //		  System.out.println( ia );
-		
-		ClientLogic c = new ClientLogic(1025, "jerry");
+		Scanner s = new Scanner(System.in);
+		System.out.println("Bitte Namen eingeben");
+		ClientLogic c = new ClientLogic(1025, s.nextLine());
 		System.out.println("client build");
 		c.clientSendAndReceive();
 	}
