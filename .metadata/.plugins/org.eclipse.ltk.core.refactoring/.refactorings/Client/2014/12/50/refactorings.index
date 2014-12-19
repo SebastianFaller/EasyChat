@@ -1,1 +1,3 @@
 1418307037825	Rename method 'connectionLost'
+1418328726055	Rename method 'reastablishConnectionIfLost'
+1418328774992	Extract local variable 'scanner'

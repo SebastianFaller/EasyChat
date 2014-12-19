@@ -27,6 +27,7 @@ public class ServerLogic {
 			// Auf neuen Client warten
 			Socket tempClient = server.accept();
 			// TODO Unschön!
+			new DataOutputStream(tempClient.getOutputStream()).writeUTF("<whoareyou/>");
 			String tempName = new DataInputStream(tempClient.getInputStream()).readUTF();
 			clients.put(tempName, tempClient);
 			ProcessingThread t = new ProcessingThread(tempClient, clients);
