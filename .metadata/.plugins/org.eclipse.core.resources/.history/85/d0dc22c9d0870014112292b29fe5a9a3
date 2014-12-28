@@ -1,0 +1,15 @@
+package ui;
+
+import javax.swing.JFrame;
+
+public class ChatFrame extends JFrame {
+	
+	private Tex
+
+	public ChatFrame() {
+		setSize(500, 500);
+		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		setVisible(true);
+	}
+
+}

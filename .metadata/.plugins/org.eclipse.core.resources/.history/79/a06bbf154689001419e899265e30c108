@@ -1,0 +1,52 @@
+package ui;
+
+import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.LayoutManager;
+import java.awt.TextArea;
+
+import javax.swing.BoxLayout;
+import javax.swing.JFrame;
+import javax.swing.JList;
+import javax.swing.JPanel;
+
+public class ChatWindow {
+	
+	private JFrame frame;
+	private final String title = "EasyChat";
+	private JPanel textPanel;
+	private TextArea chatDisplay;
+	private TextArea inputField;
+	private JList<String> userList;
+	
+	
+	public ChatWindow(){
+		frame = new JFrame(title);
+		frame.setLayout(new BorderLayout());
+		frame.setDefaultCloseOperation(frame.EXIT_ON_CLOSE);
+		frame.setSize(900, 600);
+		frame.setVisible(true);
+		
+		
+		textPanel = new JPanel(new BoxLayout(textPanel, BoxLayout.Y_AXIS));
+		chatDisplay = new TextArea("chat Display");
+		inputField = new TextArea("input field");
+		String[] test =  {"user1", "user2", "user3"};
+		userList = new JList<String>(test);
+		
+		textPanel.add(chatDisplay);
+		textPanel.add(inputField);
+		frame.add(textPanel);
+		frame.add(userList);
+		
+		
+		
+		
+	}//constructor
+
+	public static void main(String args[]){
+		new ChatWindow();
+	}
+}
