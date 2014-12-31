@@ -1,0 +1,77 @@
+package ui;
+
+import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.LayoutManager;
+import java.awt.TextArea;
+
+import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
+import javax.swing.DefaultCellEditor;
+import javax.swing.DefaultListCellRenderer;
+import javax.swing.JFrame;
+import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.ListSelectionModel;
+import javax.swing.SwingConstants;
+import javax.swing.border.TitledBorder;
+
+public class ChatWindow extends JFrame{
+	
+
+	private final String title = "EasyChat";
+	private JPanel textPanel;
+	private TextArea chatDisplay;
+	private TextArea inputField;
+	private JList<String> userList;
+	
+	
+	public ChatWindow(String s){
+		super(s);
+		this.getContentPane().setLayout(new BorderLayout());
+		this.setDefaultCloseOperation(this.EXIT_ON_CLOSE);
+		this.setSize(900, 600);
+		this.setVisible(true);
+		
+		
+		textPanel = new JPanel();
+		textPanel.setSize(300, 100);
+		textPanel.setLayout(new BorderLayout());
+		
+		chatDisplay = new TextArea("chat Display");
+		chatDisplay.setEditable(false);
+//		chatDisplay.setPreferedSize();
+		chatDisplay.setPreferredSize(new Dimension(chatDisplay.getWidth(), (this.getHeight()*3/4)));
+		
+		inputField = new TextArea("input field");
+		
+		
+		String[] userArray =  {"user1", "user2", "user3"};
+		userList = new JList<String>(userArray);
+		userList.setPreferredSize(new Dimension(this.getWidth()/4, userList.getHeight()));
+//		userList.setAlignmentX(CENTER_ALIGNMENT);
+//		userList.setAlignmentY(CENTER_ALIGNMENT);
+		JListRenderer renderer = new JListRenderer();
+//		renderer.setHorizontalAlignment(SwingConstants.CENTER);
+		userList.setCellRenderer(renderer);
+		TitledBorder title = BorderFactory.createTitledBorder("Kontakte");
+		userList.setBorder(title);
+		userList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+//		renderer.set
+
+
+		textPanel.add(chatDisplay,BorderLayout.CENTER);
+		textPanel.add(inputField, BorderLayout.SOUTH);
+		this.add(textPanel, BorderLayout.CENTER);
+		this.add(userList, BorderLayout.EAST);
+		
+		
+		
+	}//constructor
+
+	public static void main(String args[]){
+		new ChatWindow("EasyChat");
+	}
+}

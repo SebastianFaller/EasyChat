@@ -33,15 +33,20 @@ public class ProcessingThread extends Thread {
 				System.out.println("angekommen: " + received);
 				String[] segs = received.split(Pattern.quote("<adressee/>"));
 				System.out.println(segs[0]);
+					
+				try{
 				Socket adressee = clients.get(segs[0]);
-				if (adressee == null)
-					System.out.println("its a trap!!!!");
 				DataOutputStream dOut = new DataOutputStream(
 						adressee.getOutputStream());
 				System.out.println("outstream build");
 				dOut.writeUTF(segs[1]);
 				System.out.println("Hier fertig");
 				System.out.println(number);
+				} catch (NullPointerException e){
+					System.out.println("its a trap!!!!");
+//					outStream.writeUTF("<Error/>SpecifiyAdressee");
+				}
+
 			}
 
 			// dOut.close();

@@ -7,7 +7,8 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.util.Scanner;
 
-import ui.ChatFrame;
+
+import ui.ChatWindow;
 
 //TODO ThreadPool angucken
 
@@ -17,6 +18,7 @@ public class ClientLogic {
 	private DataInputStream inStream;
 	private DataOutputStream outStream;
 	private String userName;
+	private ChatWindow window;
 	private boolean connected;
 	private int port;
 	//just for test purposes
@@ -25,6 +27,7 @@ public class ClientLogic {
 	public ClientLogic(int port, String user) {
 		userName = user;
 		this.port = port;
+		
 		try {
 			connectWithServer("localHost", port);
 			connected = true;
@@ -58,13 +61,15 @@ public class ClientLogic {
 		final Thread receiverThread = new Thread() {
 			@Override
 			public void run() {
+				int receivedTotal = 0;
 				while (true) {
 					while (connected) {
 						try {
 							String received = inStream.readUTF();
 							if (!received.equals("<whoareyou/>")) {
-								System.out.println(received
-										+ "| Client erhalten");
+								if(receivedTotal==0) window.getChatDisplay().setText("");
+								displayMessage(received);
+								receivedTotal++;
 							} else {
 								System.out.println("registrate in else case");
 								registrateAtServer();
@@ -81,35 +86,17 @@ public class ClientLogic {
 			}// run
 		};
 
-		Thread senderThread = new Thread() {
-			@Override
-			public void run() {
-				Scanner s = new Scanner(System.in);
-				while (true) {
-					System.out.println("Sender");
-					while (connected) {
-						try {
-							System.out.println("Empf�nger eingeben");
-							String adressee = s.nextLine();
-							System.out.println("Text eingeben:");
-							outStream.writeUTF(adressee + "<adressee/> "
-									+ s.nextLine());
-							System.out.println("was gesendet");
-						} catch (IOException e) {
-							System.out
-									.println("Nachricht konnte nicht versand werden");
-							e.printStackTrace();
-							connected = false;
-						}
-					}// while
-					reastablishConnection();
-				}// while
-			}// run
-
-		};
+//		Thread senderThread = new Thread() {
+//			@Override
+//			public void run() {
+//				
+//				
+//			}// run
+//
+//		};
 
 		receiverThread.start();
-		senderThread.start();
+//		senderThread.start();
 
 		// outStream.close();
 		// inStream.close();
@@ -166,6 +153,57 @@ public class ClientLogic {
 			}
 		} while (!connected);
 	}
+	
+	public void displayMessage(String message){
+		if(window != null){
+			window.getChatDisplay().append(message+"\n");
+		} else {
+			System.out.println(message+ "| Client erhalten");
+		}	
+	}
+	
+	public void sendMessage(String message, String adressee){
+		//if no window
+//			while (window == null) {
+//				Scanner s = new Scanner(System.in);
+//				System.out.println("Sender");
+//				while (connected) {
+//					try {
+//						System.out.println("Empf�nger eingeben");
+//						String adressee = s.nextLine();
+//						System.out.println("Text eingeben:");
+//						outStream.writeUTF(adressee + "<adressee/> "
+//								+ s.nextLine());
+//						System.out.println("was gesendet");
+//					} catch (IOException e) {
+//						System.out
+//								.println("Nachricht konnte nicht versand werden");
+//						e.printStackTrace();
+//						connected = false;
+//					}
+//				}// while
+//				reastablishConnection();
+//			}// while
+			//else
+		if(connected){
+			try {
+				outStream.writeUTF(adressee+"<adressee/>"+message);
+			} catch (IOException e) {
+				System.out.println("Nachricht konnte nicht versand werden");
+				e.printStackTrace();
+				connected = false;
+			}
+		} else {
+			System.out.println("not cennected sending impossible");
+			reastablishConnection();
+		
+		}
+	}
+	
+	public void setWindow(ChatWindow window){
+		this.window = window;
+	}
+	
 
 	public static void main(String args[]) throws Exception {
 		// System.out.println( "Host Name/Adresse: " +
@@ -176,10 +214,13 @@ public class ClientLogic {
 		// String localHost = InetAddress.getLocalHost().getHostName();
 		// for ( InetAddress ia : InetAddress.getAllByName(localHost) )
 		// System.out.println( ia );
-		new ChatFrame();
+		
 		Scanner s = new Scanner(System.in);
 		System.out.println("Bitte Namen eingeben");
 		ClientLogic c = new ClientLogic(1025, s.nextLine());
+		ChatWindow window = new ChatWindow("EasyChat", c);
+		c.setWindow(window);
+		
 		System.out.println("client build");
 		c.clientSendAndReceive();
 		

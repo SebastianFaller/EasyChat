@@ -1,0 +1,175 @@
+package ui;
+
+import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.LayoutManager;
+import java.awt.TextArea;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+
+import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
+import javax.swing.DefaultCellEditor;
+import javax.swing.DefaultListCellRenderer;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.ListSelectionModel;
+import javax.swing.SwingConstants;
+import javax.swing.border.TitledBorder;
+
+import logic.ClientLogic;
+
+public class ChatWindow extends JFrame{
+	
+
+	private final String title = "EasyChat";
+	private JPanel textPanel;
+	private TextArea chatDisplay;
+	private JPanel inputPanel;
+	private TextArea inputField;
+	private JButton sendButton;
+	private ClientLogic logic;
+	private JList<String> userList;
+	private final String buttonText = "Senden";
+	
+	
+	public ChatWindow(String s, final ClientLogic logic){
+		super(s);
+		this.logic = logic;
+		this.getContentPane().setLayout(new BorderLayout());
+		this.setDefaultCloseOperation(this.EXIT_ON_CLOSE);
+		this.setSize(900, 600);
+		
+		
+		inputPanel = new JPanel();
+		inputPanel.setLayout(new BoxLayout(inputPanel, BoxLayout.X_AXIS));
+		
+		textPanel = new JPanel();
+		textPanel.setSize(300, 100);
+		textPanel.setLayout(new BorderLayout());
+		
+		chatDisplay = new TextArea("chat Display");
+		chatDisplay.setEditable(false);
+//		chatDisplay.setPreferedSize();
+		chatDisplay.setPreferredSize(new Dimension(chatDisplay.getWidth(), (this.getHeight()*3/4)));
+
+		
+		String[] userArray =  {"user1", "user2", "user3"};
+		userList = new JList<String>(userArray);
+		userList.setPreferredSize(new Dimension(this.getWidth()/4, userList.getHeight()));
+//		userList.setAlignmentX(CENTER_ALIGNMENT);
+//		userList.setAlignmentY(CENTER_ALIGNMENT);
+		JListRenderer renderer = new JListRenderer();
+//		renderer.setHorizontalAlignment(SwingConstants.CENTER);
+		userList.setCellRenderer(renderer);
+		TitledBorder title = BorderFactory.createTitledBorder("Kontakte");
+		userList.setBorder(title);
+		userList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);		
+//		renderer.set
+
+		inputField = new TextArea("input field");
+		inputField.addMouseListener(new MouseListener() {
+			
+			@Override
+			public void mouseReleased(MouseEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mousePressed(MouseEvent arg0) {
+				inputField.setText("");
+				
+			}
+			
+			@Override
+			public void mouseExited(MouseEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseEntered(MouseEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+		
+		inputField.addKeyListener(new KeyListener() {
+			
+			@Override
+			public void keyTyped(KeyEvent arg0) {
+				if(arg0.getKeyChar()=='\n’){
+					sendToLogic();
+				}
+				
+			}
+			
+			@Override
+			public void keyReleased(KeyEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void keyPressed(KeyEvent arg0) {
+				// TODO Auto-generated method stub
+			}
+		});
+		
+		
+		sendButton = new JButton(buttonText);
+		sendButton.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				sendToLogic();
+			}
+		});
+
+		inputPanel.add(inputField);
+		inputPanel.add(sendButton);
+		textPanel.add(chatDisplay,BorderLayout.CENTER);
+		textPanel.add(inputPanel, BorderLayout.SOUTH);
+		this.add(textPanel, BorderLayout.CENTER);
+		this.add(userList, BorderLayout.EAST);
+
+		//always needs to be the last statement
+		this.setVisible(true);
+	}//constructor
+	
+	private void sendToLogic(){
+		String feed = inputField.getText();
+		logic.sendMessage(feed, userList.getSelectedValue());
+		inputField.setText("");
+	}
+
+
+	public TextArea getChatDisplay() {
+		return chatDisplay;
+	}
+	
+	public TextArea getInputField() {
+		return inputField;
+	}
+
+//	public static void main(String args[]){
+//		new ChatWindow("EasyChat");
+//	}
+}
+
+
