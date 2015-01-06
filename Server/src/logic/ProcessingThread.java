@@ -3,8 +3,11 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.regex.Pattern;
+
+import data.DatabaseConnection;
 
 public class ProcessingThread extends Thread {
 
@@ -27,6 +30,7 @@ public class ProcessingThread extends Thread {
 	@Override
 	public void run() {
 		// while(true){
+		logInClient();
 		try {
 			while (true) {
 				String received = inStream.readUTF();
@@ -60,7 +64,76 @@ public class ProcessingThread extends Thread {
 			// e.printStackTrace();
 			System.out.println("Server lost connection to  client");
 		}
+		
+		finally {
+			try {
+				closeStreams();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 
 		// }
+	}
+	
+	public void logInClient(){
+		boolean logginSuccessful = false;
+		do{
+					try {
+						outStream.writeUTF("<whoareyou/>");
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					String loginData = null;
+					while (loginData == null) {
+						try {
+							loginData = inStream.readUTF();
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+							break;	
+						}
+					}
+					// zerlege string. zweiter teil ist name
+//					System.out.println("temp name 1: " + tempName);
+					System.out.println("loginData"+loginData);
+					loginData = loginData.split(Pattern.quote("<login/>"))[1];
+//					System.out.println("temp name 2: " + tempName);
+					String pwd = loginData.split(Pattern.quote("<pwd/>"))[1];
+					String name = loginData.split(Pattern.quote("<pwd/>"))[0];
+					//ohne führendes <name/>
+					name = name.substring(7);
+					System.out.println(name);
+					DatabaseConnection database = new DatabaseConnection();
+					String[] s = database.getPwdToUserFromDB(name);
+					try {
+						database.closeDatabaseConnection();
+					} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+
+					if((s!=null) && (s[1].equals(pwd)) && (s[0]).equals(name)){
+						try {
+							System.out.println("succsses");
+							outStream.writeUTF("Wilkommen! "+name);
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+						clients.put(name, clientSocket);
+						logginSuccessful = true;
+						System.out.println("pwd laut sql: "+s[1]);
+					}
+					
+		} while(!logginSuccessful);
+									
+	}
+	
+	public void closeStreams() throws IOException{
+		inStream.close();
+		outStream.close();
 	}
 }

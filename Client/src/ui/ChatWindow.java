@@ -12,6 +12,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.WindowEvent;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -76,6 +77,7 @@ public class ChatWindow extends JFrame{
 //		renderer.set
 
 		inputField = new TextArea("input field");
+		inputField.requestFocus();
 		inputField.addMouseListener(new MouseListener() {
 			
 			@Override
@@ -155,6 +157,10 @@ public class ChatWindow extends JFrame{
 		logic.sendMessage(feed, userList.getSelectedValue());
 		//TODO macht aus irgendnem Grund trotzdem Absatz
 		inputField.setText("");
+	}
+	
+	public void closeFrame(){
+		this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
 	}
 
 

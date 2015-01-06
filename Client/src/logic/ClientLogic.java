@@ -9,6 +9,7 @@ import java.util.Scanner;
 
 
 import ui.ChatWindow;
+import ui.LoginWindow;
 
 //TODO ThreadPool angucken
 
@@ -19,14 +20,20 @@ public class ClientLogic {
 	private DataOutputStream outStream;
 	private String userName;
 	private ChatWindow window;
+	private LoginWindow loginWindow;
 	private boolean connected;
 	private int port;
+	private boolean loggedIn;
+	private int loginAttempts;
 	//just for test purposes
 	int sent = 0;
 
-	public ClientLogic(int port, String user) {
-		userName = user;
+	public ClientLogic(int port) {
+		this.userName = null;
+		this.loggedIn = false;
 		this.port = port;
+		this.loginAttempts = 0;
+//		window = new ChatWindow(userName, this);
 		
 		try {
 			connectWithServer("localHost", port);
@@ -34,6 +41,7 @@ public class ClientLogic {
 		} catch (IOException e) {
 			System.out.println("Connection failed");
 			connected = false;
+			loggedIn = false;
 			while (!reastablishConnection())
 				;
 			// e.printStackTrace();
@@ -41,6 +49,8 @@ public class ClientLogic {
 	}// constructor
 
 	public void clientSendAndReceive() {
+		
+
 		// System.out.println("kurz vorm senden");
 		// String firstReceived = null;
 		// try {
@@ -67,18 +77,24 @@ public class ClientLogic {
 						try {
 							String received = inStream.readUTF();
 							if (!received.equals("<whoareyou/>")) {
+								if(window == null){
+									window = new ChatWindow("EasyChat", ClientLogic.this);
+									loginWindow.closeFrame();
+								}
 								if(receivedTotal==0) window.getChatDisplay().setText("");
 								displayMessage(received);
 								receivedTotal++;
 							} else {
 								System.out.println("registrate in else case");
-								registrateAtServer();
+								//TODO alles außer kontrolle, was die initialisierungen der drei Klassen angeht. Reihenfolge und Assoziationen müssen neu geklärt werden.
+								logInAtServer();
 							}
 						} catch (IOException e) {
 							System.out
 									.println("Nachricht konnte nicht empfangen werden");
 							// e.printStackTrace();
 							connected = false;
+							loggedIn = false;
 						}
 					}// while
 					reastablishConnection();
@@ -129,6 +145,7 @@ public class ClientLogic {
 				System.out.println("Connection still not established");
 				// e.printStackTrace();
 				connected = false;
+				loggedIn = false;
 				return false;
 			}// catch
 			return true;
@@ -139,21 +156,59 @@ public class ClientLogic {
 		}
 	}// reastablishConnection
 
-	public void registrateAtServer() {
-
+	public void logInAtServer() {
+//		if(window!=null) {
+//			window.closeFrame();
+//			window = null;
+//		}
+		if(loginAttempts==0){
+		loginWindow = new LoginWindow(this);
+		} else {
+			loginWindow.loginFailed();
+		}
+		
+//		while(!loggedIn);
+	}
+	
+	public void loginWithValues(char[]password, String userName){
+		this.userName = userName;
 		do {
 			try {
 				System.out.println(sent++);
-				outStream.writeUTF("<iam/>" + userName);
+				String pwd = "";
+				for(int i = 0; i<password.length; i++){
+					pwd += password[i];
+				}
+				outStream.writeUTF("<login/><user/>" + userName+"<pwd/>"+pwd);
+				System.out.println("password: "+pwd);
+				pwd = "";
+				for(int i = 0; i < password.length; i++){
+					password[0] = 0;
+				}
+				loginAttempts++;
+//				boolean respond = inStream.readBoolean();
+				System.out.println("wixxxr");
+				
+//				if(respond){
+//					loggedIn = true;
+//					loginWindow.closeFrame();
+//				} else {
+//					loginWindow.loginFailed();
+//				}
+				
+				
 			} catch (IOException e) {
 				System.out.println("registrating at the server failed");
 				connected = false;
+				loggedIn = false;
 				reastablishConnection();
 				e.printStackTrace();
 			}
 		} while (!connected);
+//		final ChatWindow window = new ChatWindow("EasyChat", this);
+//		this.window = window;
 	}
-	
+
 	public void displayMessage(String message){
 		if(window != null){
 			window.getChatDisplay().append(message+"\n");
@@ -192,6 +247,7 @@ public class ClientLogic {
 				System.out.println("Nachricht konnte nicht versand werden");
 				e.printStackTrace();
 				connected = false;
+				loggedIn = false;
 			}
 		} else {
 			System.out.println("not cennected sending impossible");
@@ -200,9 +256,11 @@ public class ClientLogic {
 		}
 	}
 	
-	public void setWindow(ChatWindow window){
-		this.window = window;
-	}
+	
+	
+//	public void setWindow(ChatWindow window){
+//		this.window = window;
+//	}
 	
 
 	public static void main(String args[]) throws Exception {
@@ -214,15 +272,15 @@ public class ClientLogic {
 		// String localHost = InetAddress.getLocalHost().getHostName();
 		// for ( InetAddress ia : InetAddress.getAllByName(localHost) )
 		// System.out.println( ia );
-		
-		Scanner s = new Scanner(System.in);
-		System.out.println("Bitte Namen eingeben");
-		ClientLogic c = new ClientLogic(1025, s.nextLine());
-		ChatWindow window = new ChatWindow("EasyChat", c);
-		c.setWindow(window);
+//		
+//		Scanner s = new Scanner(System.in);
+//		System.out.println("Bitte Namen eingeben");
+
+		ClientLogic c = new ClientLogic(1025);
+		c.clientSendAndReceive();
 		
 		System.out.println("client build");
-		c.clientSendAndReceive();
+//		loginWindow.getClientLogic().clientSendAndReceive();
 		
 		// s.close();
 	}

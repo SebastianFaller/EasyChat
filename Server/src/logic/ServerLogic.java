@@ -28,19 +28,7 @@ public class ServerLogic {
 		while (true) {
 			// Auf neuen Client warten
 			Socket tempClient = server.accept();
-			// TODO Unschön! sollte auch in anderen Thread
-			new DataOutputStream(tempClient.getOutputStream())
-					.writeUTF("<whoareyou/>");
-			String tempName = null;
-			while (tempName == null) {
-				tempName = new DataInputStream(tempClient.getInputStream())
-						.readUTF();
-			}
-			// zerlege string. zweiter teil ist name
-			System.out.println("temp name 1: " + tempName);
-			tempName = tempName.split(Pattern.quote("<iam/>"))[1];
-			System.out.println("temp name 2: " + tempName);
-			clients.put(tempName, tempClient);
+			
 			ProcessingThread t = new ProcessingThread(tempClient, clients);
 			t.setDaemon(true);
 			t.start();

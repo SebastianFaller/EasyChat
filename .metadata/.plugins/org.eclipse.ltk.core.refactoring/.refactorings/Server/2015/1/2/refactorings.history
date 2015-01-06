@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename method &apos;logic.ProcessingThread.closeThread()&apos; to &apos;closeStreams&apos;&#x0A;- Original project: &apos;Server&apos;&#x0A;- Original element: &apos;logic.ProcessingThread.closeThread()&apos;&#x0A;- Renamed element: &apos;logic.ProcessingThread.closeStreams()&apos;&#x0A;- Update references to refactored element" delegate="false" deprecate="false" description="Rename method &apos;closeThread&apos;" flags="589830" id="org.eclipse.jdt.ui.rename.method" input="/src&lt;logic{ProcessingThread.java[ProcessingThread~closeThread" name="closeStreams" references="true" stamp="1420584902444" version="1.0"/>
+</session>
