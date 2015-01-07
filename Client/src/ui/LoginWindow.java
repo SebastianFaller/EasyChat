@@ -26,18 +26,22 @@ import logic.ClientLogic;
 
 public class LoginWindow extends JFrame{
 	
-	private ClientLogic clientLogic;
-	private int port;
+	protected ClientLogic clientLogic;
+//	protected int port;
 	
-	private JTextField userNameField;
-	private JPasswordField passwordField;
+	protected JTextField userNameField;
+	protected JPasswordField passwordField;
 	private JLabel nameLabel;
 	private JLabel pwdLabel;
 //	private JPanel namePanel;
 //	private JPanel pwdPanel;
-	private JPanel inputPanel;
-	private JButton loginButton;
-	private JLabel failedLabel;
+	protected JPanel inputPanel;
+	protected JButton loginButton;
+	protected JButton registrateButton;
+	private JButton cancelButton;
+	private JPanel buttonPanel;
+	protected JLabel failedLabel;
+	protected GridBagConstraints c;
 	
 	public LoginWindow(ClientLogic client){
 		
@@ -67,8 +71,11 @@ public class LoginWindow extends JFrame{
 //		pwdPanel = new JPanel();
 //		pwdPanel.setLayout(new BoxLayout(pwdPanel, BoxLayout.X_AXIS));
 		inputPanel = new JPanel();
+		buttonPanel = new JPanel();
 //		inputPanel.setLayout(new BorderLayout());
 		loginButton = new JButton("Login");
+		cancelButton = new JButton("Abbrechen");
+		registrateButton = new JButton("Registrieren");
 		
 		failedLabel = new JLabel("Name oder Password falsch.");
 		failedLabel.setForeground(Color.RED);
@@ -76,7 +83,7 @@ public class LoginWindow extends JFrame{
 		
 		GridBagLayout layout = new GridBagLayout();
 		inputPanel.setLayout(layout);
-		GridBagConstraints c = new GridBagConstraints();
+		c = new GridBagConstraints();
 		int padding = 5;
 		Insets insets = new Insets(padding, padding, padding, padding);
 		c .insets = insets;
@@ -102,6 +109,10 @@ public class LoginWindow extends JFrame{
 		
 		inputPanel.add(passwordField, c);
 		
+		buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.X_AXIS));
+		buttonPanel.add(loginButton);
+		buttonPanel.add(registrateButton);
+		buttonPanel.add(cancelButton);
 		
 		NameFieldListener l = new NameFieldListener(this, userNameField);
 		userNameField.addMouseListener(l);
@@ -116,6 +127,23 @@ public class LoginWindow extends JFrame{
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				login();
+			}
+		});
+		
+		cancelButton.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				System.exit(0);
+			}
+		});
+		
+		registrateButton.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				new RegistrationWindow(clientLogic);
+				
 			}
 		});
 		
@@ -138,8 +166,8 @@ public class LoginWindow extends JFrame{
 		p.add(inputPanel);
 		p.add(failedLabel);
 		p.add(Box.createRigidArea(new Dimension(0, 15)));
-		p.add(loginButton);
-		loginButton.setAlignmentX(CENTER_ALIGNMENT);
+		p.add(buttonPanel);
+		buttonPanel.setAlignmentX(CENTER_ALIGNMENT);
 		p.add(Box.createRigidArea(new Dimension(0, 5)));
 		this.pack();
 		setVisible(true);

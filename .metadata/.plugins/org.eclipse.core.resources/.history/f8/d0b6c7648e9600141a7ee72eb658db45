@@ -1,0 +1,13 @@
+package ui;
+
+import logic.ClientLogic;
+
+public class RegistrationWindow extends LoginWindow{
+	
+	public RegistrationWindow(ClientLogic clientLogic){
+	super(clientLogic);
+	}
+	
+	
+
+}

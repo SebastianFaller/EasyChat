@@ -17,13 +17,13 @@ public class PwdFieldListener extends NameFieldListener{
 	@Override
 	public void keyPressed(KeyEvent e) {
 		super.keyPressed(e);
-		((JPasswordField) this.textField).setEchoChar('•');
+		((JPasswordField) this.textField).setEchoChar('*');
 	}
 	
 	@Override
 	public void mousePressed(MouseEvent arg0) {
 		super.mousePressed(arg0);
-		((JPasswordField) this.textField).setEchoChar('•');
+		((JPasswordField) this.textField).setEchoChar('*');
 	}
 
 }

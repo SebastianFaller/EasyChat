@@ -254,6 +254,22 @@ public class ClientLogic {
 			reastablishConnection();
 		
 		}
+		
+		
+	}
+	
+	public boolean registrateAtServer(String name, char[] password1, char[] password2){
+		if(password1.equals(password2)){
+		try {
+			outStream.writeUTF("<registrate/><name/>"+name+"<pwd>"+password1);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return true;
+		} else {
+			return false;
+		}
 	}
 	
 	

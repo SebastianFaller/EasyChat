@@ -99,8 +99,9 @@ public class ProcessingThread extends Thread {
 					// zerlege string. zweiter teil ist name
 //					System.out.println("temp name 1: " + tempName);
 					System.out.println("loginData"+loginData);
+					try{
+						//this statement throws ArrayyOutOfBoundsExc when first statement is not login
 					loginData = loginData.split(Pattern.quote("<login/>"))[1];
-//					System.out.println("temp name 2: " + tempName);
 					String pwd = loginData.split(Pattern.quote("<pwd/>"))[1];
 					String name = loginData.split(Pattern.quote("<pwd/>"))[0];
 					//ohne führendes <name/>
@@ -127,7 +128,30 @@ public class ProcessingThread extends Thread {
 						logginSuccessful = true;
 						System.out.println("pwd laut sql: "+s[1]);
 					}
-					
+
+					} catch (ArrayIndexOutOfBoundsException e){
+						//catches if string doesnt start with "<login/>"
+						loginData = loginData.split(Pattern.quote("<registrate/>"))[1];
+						String pwd = loginData.split(Pattern.quote("<pwd/>"))[1];
+						String name = loginData.split(Pattern.quote("<pwd/>"))[0];
+						//ohne führendes <name/>
+						name = name.substring(7);
+						System.out.println(name);
+						DatabaseConnection database = new DatabaseConnection();
+						database.makeNewRowInUsers(name, pwd);
+						try {
+							database.closeDatabaseConnection();
+							//TODO stoppd here!! 
+						} catch (SQLException sqle) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+
+					}
+					System.out.println("String loginData "+loginData);
+					//Unterscheidung login oder registration
+//					System.out.println("temp name 2: " + tempName);
+										
 		} while(!logginSuccessful);
 									
 	}

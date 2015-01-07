@@ -59,6 +59,16 @@ public class DatabaseConnection {
 			preparedStatement.close();
 		}
 	}
+	
+	public void makeNewRowInUsers(String name, String password){
+		try {
+			preparedStatement = connection.prepareStatement("INSERT INTO Users(name, password) VALUES('"+name+"', '"+password+"';");
+			ResultSet result = preparedStatement.executeQuery();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
+	}
 
 }
