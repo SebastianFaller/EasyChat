@@ -11,12 +11,12 @@ import javax.swing.JTextField;
 
 public class NameFieldListener implements MouseListener, KeyListener{
 	
-	private LoginWindow w;
+	private UserInputDialog userInputDialog;
 	protected JTextField textField;
 	private boolean firstKeyPressed;
 	
-	public NameFieldListener(LoginWindow w, JTextField textField){
-		this.w = w;
+	public NameFieldListener(UserInputDialog userInputDialog, JTextField textField){
+		this.userInputDialog = userInputDialog;
 		this.textField = textField;
 		firstKeyPressed = false;
 	}
@@ -57,7 +57,7 @@ public class NameFieldListener implements MouseListener, KeyListener{
 			setTextDefault();
 		}
 		if(e.getKeyCode()==KeyEvent.VK_ENTER){
-			w.login();
+			userInputDialog.submit();
 		}
 		
 	}

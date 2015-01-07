@@ -24,125 +24,36 @@ import javax.swing.JTextField;
 
 import logic.ClientLogic;
 
-public class LoginWindow extends JFrame{
+public class LoginWindow extends UserInputDialog{
 	
-	protected ClientLogic clientLogic;
-//	protected int port;
-	
-	protected JTextField userNameField;
-	protected JPasswordField passwordField;
-	private JLabel nameLabel;
-	private JLabel pwdLabel;
-//	private JPanel namePanel;
-//	private JPanel pwdPanel;
-	protected JPanel inputPanel;
-	protected JButton loginButton;
-	protected JButton registrateButton;
-	private JButton cancelButton;
-	private JPanel buttonPanel;
-	protected JLabel failedLabel;
-	protected GridBagConstraints c;
+	private JButton registrateButton;
 	
 	public LoginWindow(ClientLogic client){
+		super(client);
 		
-		clientLogic = client;
-//		setSize(400, 600);
-		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		Container p = this.getContentPane();
-		p.setLayout(new BoxLayout(p ,BoxLayout.Y_AXIS ));
-		
-		userNameField = new JTextField("Benutzername", 20);
-		userNameField.setForeground(Color.GRAY);
-		userNameField.setHorizontalAlignment(JTextField.CENTER);
-//		userNameField.setPreferredSize(new Dimension(20, this.getHeight()));
-//		userNameField.setSize(160, 25);
-		passwordField = new JPasswordField("Passwort", 20);
-		passwordField.setForeground(Color.GRAY);
-		passwordField.setHorizontalAlignment(JTextField.CENTER);
-		passwordField.setEchoChar((char) 0);
-//		passwordField.setPreferredSize(new Dimension(20, this.getHeight()));
-//		passwordField.setSize(160, 25);
-//		passwordField.setPreferredSize(new Dimension(160, 25));
-		
-		nameLabel = new JLabel("Benutzer:");
-		pwdLabel = new JLabel("Passwort:");
-//		namePanel = new JPanel();
-//		namePanel.setLayout(new BoxLayout(namePanel, BoxLayout.X_AXIS));
-//		pwdPanel = new JPanel();
-//		pwdPanel.setLayout(new BoxLayout(pwdPanel, BoxLayout.X_AXIS));
-		inputPanel = new JPanel();
-		buttonPanel = new JPanel();
-//		inputPanel.setLayout(new BorderLayout());
-		loginButton = new JButton("Login");
-		cancelButton = new JButton("Abbrechen");
+//		submitButton = new JButton("Login");
+//		cancelButton = new JButton("Abbrechen");
 		registrateButton = new JButton("Registrieren");
 		
-		failedLabel = new JLabel("Name oder Password falsch.");
-		failedLabel.setForeground(Color.RED);
-		failedLabel.setVisible(false);
+		failedLabel.setText("Name oder Password falsch.");
 		
-		GridBagLayout layout = new GridBagLayout();
-		inputPanel.setLayout(layout);
-		c = new GridBagConstraints();
-		int padding = 5;
-		Insets insets = new Insets(padding, padding, padding, padding);
-		c .insets = insets;
-		c.fill = GridBagConstraints.HORIZONTAL;
-		c.anchor = GridBagConstraints.LINE_START;
-		c.gridx = 0;
-		c.gridy = 0;
-		
-		inputPanel.add(nameLabel,c);
-		
-		c.gridx = 1;
-		c.gridy = 0;
-		
-		inputPanel.add(userNameField, c);
-		
-		c.gridx = 0;
-		c.gridy = 1;
-		
-		inputPanel.add(pwdLabel, c);
-		
-		c.gridx = 1;
-		c.gridy = 1;
-		
-		inputPanel.add(passwordField, c);
-		
-		buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.X_AXIS));
-		buttonPanel.add(loginButton);
 		buttonPanel.add(registrateButton);
-		buttonPanel.add(cancelButton);
-		
-		NameFieldListener l = new NameFieldListener(this, userNameField);
-		userNameField.addMouseListener(l);
-		userNameField.addKeyListener(l);
-		
-		PwdFieldListener pwdl = new PwdFieldListener(this, passwordField);
-		passwordField.addMouseListener(pwdl);
-		passwordField.addKeyListener(pwdl);
+		submitButton.setText("Login");
 
-		
-		loginButton.addActionListener(new ActionListener() {	
+		submitButton.addActionListener(new ActionListener() {	
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				login();
+				submit();
 			}
 		});
-		
-		cancelButton.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				System.exit(0);
-			}
-		});
+
 		
 		registrateButton.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				new RegistrationWindow(clientLogic);
+				LoginWindow.this.setVisible(false);
 				
 			}
 		});
@@ -162,19 +73,12 @@ public class LoginWindow extends JFrame{
 //		loginButton.setAlignmentX(CENTER_ALIGNMENT);
 //		
 //		this.getContentPane().setLayout(new BoxLayout(this.getContentPane(), BoxLayout.Y_AXIS));
-		p.add(Box.createRigidArea(new Dimension(0, 5)));
-		p.add(inputPanel);
-		p.add(failedLabel);
-		p.add(Box.createRigidArea(new Dimension(0, 15)));
-		p.add(buttonPanel);
-		buttonPanel.setAlignmentX(CENTER_ALIGNMENT);
-		p.add(Box.createRigidArea(new Dimension(0, 5)));
+		
 		this.pack();
 		setVisible(true);
-		
 	}
 	
-	public void login(){
+	public void submit(){
 		String user = userNameField.getText();
 		char[] password = passwordField.getPassword();
 		System.out.println("window password: "+password.toString());
@@ -182,25 +86,16 @@ public class LoginWindow extends JFrame{
 		for(int i = 0; i < password.length; i++){
 			password[0] = 0;
 		}
+		this.pack();
 	}
 	
-	public void closeFrame(){
-		this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
-	}
+	
 	
 	public void loginFailed(){
 		System.out.println("failed");
 		failedLabel.setVisible(true);
 	}
 	
-	public JTextField getUserNameField(){
-		return userNameField;
-	}
-	
-	public JPasswordField getPasswordField(){
-		return passwordField;
-	}
-
 //	public ClientLogic getClientLogic() {
 //		return clientLogic;
 //	}

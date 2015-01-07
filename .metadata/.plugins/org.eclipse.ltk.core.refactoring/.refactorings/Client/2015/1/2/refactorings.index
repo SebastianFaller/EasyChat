@@ -7,3 +7,10 @@
 1420576060729	Delete element
 1420576371909	Rename field 'userNameField'
 1420649827015	Rename type 'registrationWindow'
+1420664923943	Rename field 'passwordField'
+1420665820729	Rename local variable 'client'
+1420665976565	Rename method 'loginFailed'
+1420666241152	Rename field 'loginButton'
+1420668103455	Rename field 'w'
+1420668278137	Rename local variable 'w'
+1420668346116	Rename local variable 'w'

@@ -9,9 +9,8 @@ import javax.swing.JTextField;
 public class PwdFieldListener extends NameFieldListener{
 
 	
-	
-	public PwdFieldListener(LoginWindow w, JTextField textField) {
-		super(w, textField);
+	public PwdFieldListener(UserInputDialog userInputDialog, JTextField textField) {
+		super(userInputDialog, textField);
 	}
 	
 	@Override

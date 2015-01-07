@@ -1,0 +1,55 @@
+package ui;
+
+import java.awt.Color;
+import java.awt.GridBagConstraints;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyListener;
+
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
+
+import logic.ClientLogic;
+
+public class RegistrationWindow extends LoginWindow{
+	
+	private JPasswordField secondPWField;
+	
+	public RegistrationWindow(ClientLogic clientLogic){
+	super(clientLogic);
+	secondPWField = new JPasswordField();
+	secondPWField = new JPasswordField("Passwort", 20);
+	secondPWField.setForeground(Color.GRAY);
+	secondPWField.setHorizontalAlignment(JTextField.CENTER);
+	secondPWField.setEchoChar((char) 0);
+	secondPWField.setText("Wiederhole Passwort");
+	this.registrateButton.setVisible(false);
+	loginButton.setText("Okay");
+	c.gridx = 1;
+	c.gridy = 2;
+	inputPanel.add(secondPWField, c);
+	PwdFieldListener l = new PwdFieldListener(this, secondPWField);
+	secondPWField.addKeyListener(l);
+	secondPWField.addMouseListener(l);
+	
+	//TODO cant just use login button build new one
+	loginButton.addActionListener(new ActionListener() {
+		
+		@Override
+		public void actionPerformed(ActionEvent arg0) {
+			String name = userNameField.getText();
+			char[] password1 = passwordField.getPassword();
+			char[] password2 = secondPWField.getPassword();
+			boolean b = RegistrationWindow.this.clientLogic.registrateAtServer(name, password1, password2);
+			if(!b){
+				failedLabel.setText("Passwort nicht identisch");
+				failedLabel.setVisible(true);
+			}
+		}
+	});
+	this.pack();
+	}
+	
+	
+
+}

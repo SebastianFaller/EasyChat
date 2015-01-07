@@ -1,0 +1,33 @@
+package ui;
+
+import java.awt.Color;
+
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
+
+import logic.ClientLogic;
+
+
+
+
+public class RegistrationWindow extends UserInputDialog {
+	
+	
+	private JPasswordField secondPWField;
+
+	public RegistrationWindow(ClientLogic clientLogic){
+		super(clientLogic);
+		secondPWField = new JPasswordField();
+		secondPWField = new JPasswordField("Passwort", 20);
+		secondPWField.setForeground(Color.GRAY);
+		secondPWField.setHorizontalAlignment(JTextField.CENTER);
+		secondPWField.setEchoChar((char) 0);
+		secondPWField.setText("Wiederhole Passwort");
+		c.gridx = 1;
+		c.gridy = 2;
+		inputPanel.add(secondPWField, c);
+		
+		this.pack();
+		this.setVisible(true);
+	}
+}
