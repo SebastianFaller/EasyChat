@@ -160,4 +160,14 @@ public class ProcessingThread extends Thread {
 		inStream.close();
 		outStream.close();
 	}
+	
+	public String[] getOnlineUsers(){
+		String[] result = new String[clients.size()];
+//		Iterator it = clients.values().iterator();
+		int i = 0;
+		for(String k : clients.keySet()){
+			result[i] = k;
+		}
+		return result;
+	}
 }

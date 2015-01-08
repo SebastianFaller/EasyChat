@@ -25,6 +25,7 @@ public class ClientLogic {
 	private int port;
 	private boolean loggedIn;
 	private int loginAttempts;
+	private UpdateContactsThread updateContactsThread; 
 	// just for test purposes
 	int sent = 0;
 
@@ -303,6 +304,11 @@ public class ClientLogic {
 		for (int i = 0; i < password.length; i++) {
 			password[0] = 0;
 		}
+	}
+	
+	public String[] demandOnlineUsers(){
+		outStream.writeUTF("<getUsers/>");
+		return null;
 	}
 
 	// public void setWindow(ChatWindow window){

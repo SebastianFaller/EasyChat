@@ -171,6 +171,10 @@ public class ChatWindow extends JFrame{
 	public TextArea getInputField() {
 		return inputField;
 	}
+	
+	public JList<String> getUserList(){
+		return userList;
+	}
 
 //	public static void main(String args[]){
 //		new ChatWindow("EasyChat");
