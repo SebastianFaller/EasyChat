@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<workbench progressCount="21" version="2.0">
+<workbench progressCount="20" version="2.0">
 <workbenchAdvisor/>
 <window height="768" maximized="true" width="1024" x="65" y="24">
 <fastViewData fastViewLocation="1024"/>
@@ -33,45 +33,52 @@
 <folder appearance="1" expanded="2">
 <presentation id="org.eclipse.ui.presentations.WorkbenchPresentationFactory">
 <part id="0"/>
+<part id="9"/>
+<part id="1"/>
 <part id="3"/>
 <part id="4"/>
-<part id="1"/>
 <part id="2"/>
 <part id="5"/>
 <part id="6"/>
 <part id="7"/>
 <part id="8"/>
+<part id="10"/>
+<part id="11"/>
+<part id="12"/>
+<part id="13"/>
+<part id="14"/>
+<part id="15"/>
 </presentation>
 </folder>
 </info>
 </editorArea>
-<editor id="org.eclipse.jdt.ui.CompilationUnitEditor" name="ClientLogic.java" partName="ClientLogic.java" path="/home/sebastian/Documents/Programmieren/Java/Eclipse/EasyChat/Client/src/logic/ClientLogic.java" title="ClientLogic.java" tooltip="Client/src/logic/ClientLogic.java" workbook="DefaultEditorWorkbook">
+<editor activePart="true" focus="true" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="ClientLogic.java" partName="ClientLogic.java" path="/home/sebastian/Documents/Programmieren/Java/Eclipse/EasyChat/Client/src/logic/ClientLogic.java" title="ClientLogic.java" tooltip="Client/src/logic/ClientLogic.java" workbook="DefaultEditorWorkbook">
 <input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/Client/src/logic/ClientLogic.java"/>
-<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="1895" selectionTopPixel="1144"/>
+<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="8913" selectionTopPixel="5377"/>
 </editor>
 <editor id="org.eclipse.jdt.ui.CompilationUnitEditor" name="ProcessingThread.java" partName="ProcessingThread.java" path="/home/sebastian/Documents/Programmieren/Java/Eclipse/EasyChat/Server/src/logic/ProcessingThread.java" title="ProcessingThread.java" tooltip="Server/src/logic/ProcessingThread.java" workbook="DefaultEditorWorkbook">
 <input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/Server/src/logic/ProcessingThread.java"/>
-<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="1922" selectionTopPixel="0"/>
+<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="5835" selectionTopPixel="2800"/>
 </editor>
 <editor id="org.eclipse.jdt.ui.CompilationUnitEditor" name="ServerLogic.java" partName="ServerLogic.java" path="/home/sebastian/Documents/Programmieren/Java/Eclipse/EasyChat/Server/src/logic/ServerLogic.java" title="ServerLogic.java" tooltip="Server/src/logic/ServerLogic.java" workbook="DefaultEditorWorkbook">
 <input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/Server/src/logic/ServerLogic.java"/>
-<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="919" selectionTopPixel="240"/>
+<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="919" selectionTopPixel="0"/>
 </editor>
-<editor activePart="true" focus="true" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="ChatWindow.java" partName="ChatWindow.java" path="/home/sebastian/Documents/Programmieren/Java/Eclipse/EasyChat/Client/src/ui/ChatWindow.java" title="ChatWindow.java" tooltip="Client/src/ui/ChatWindow.java" workbook="DefaultEditorWorkbook">
+<editor id="org.eclipse.jdt.ui.CompilationUnitEditor" name="ChatWindow.java" partName="ChatWindow.java" path="/home/sebastian/Documents/Programmieren/Java/Eclipse/EasyChat/Client/src/ui/ChatWindow.java" title="ChatWindow.java" tooltip="Client/src/ui/ChatWindow.java" workbook="DefaultEditorWorkbook">
 <input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/Client/src/ui/ChatWindow.java"/>
-<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="1358" selectionTopPixel="0"/>
+<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="1109" selectionTopPixel="438"/>
 </editor>
 <editor id="org.eclipse.jdt.ui.CompilationUnitEditor" name="JListRenderer.java" partName="JListRenderer.java" path="/home/sebastian/Documents/Programmieren/Java/Eclipse/EasyChat/Client/src/ui/JListRenderer.java" title="JListRenderer.java" tooltip="Client/src/ui/JListRenderer.java" workbook="DefaultEditorWorkbook">
 <input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/Client/src/ui/JListRenderer.java"/>
-<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="1611" selectionTopPixel="359"/>
+<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="2433" selectionTopPixel="801"/>
 </editor>
 <editor id="org.eclipse.jdt.ui.CompilationUnitEditor" name="test.java" partName="test.java" path="/home/sebastian/Documents/Programmieren/Java/Eclipse/EasyChat/TestPro/src/test.java" title="test.java" tooltip="TestPro/src/test.java" workbook="DefaultEditorWorkbook">
 <input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/TestPro/src/test.java"/>
-<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="321" selectionTopPixel="0"/>
+<editorState selectionHorizontalPixel="0" selectionLength="18" selectionOffset="580" selectionTopPixel="0"/>
 </editor>
 <editor id="org.eclipse.jdt.ui.CompilationUnitEditor" name="DatabaseConnection.java" partName="DatabaseConnection.java" path="/home/sebastian/Documents/Programmieren/Java/Eclipse/EasyChat/Server/src/data/DatabaseConnection.java" title="DatabaseConnection.java" tooltip="Server/src/data/DatabaseConnection.java" workbook="DefaultEditorWorkbook">
 <input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/Server/src/data/DatabaseConnection.java"/>
-<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="1129" selectionTopPixel="280"/>
+<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="2982" selectionTopPixel="1226"/>
 </editor>
 <editor id="org.eclipse.jdt.ui.CompilationUnitEditor" name="LoginWindow.java" partName="LoginWindow.java" path="/home/sebastian/Documents/Programmieren/Java/Eclipse/EasyChat/Client/src/ui/LoginWindow.java" title="LoginWindow.java" tooltip="Client/src/ui/LoginWindow.java" workbook="DefaultEditorWorkbook">
 <input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/Client/src/ui/LoginWindow.java"/>
@@ -79,6 +86,34 @@
 </editor>
 <editor id="org.eclipse.jdt.ui.ClassFileEditor" name="DataInputStream.class" partName="DataInputStream.class" path="/tmp/DataInputStream.class1510777174047564573.class" title="DataInputStream.class" tooltip="java.io.DataInputStream" workbook="DefaultEditorWorkbook">
 <input factoryID="org.eclipse.jdt.ui.ClassFileEditorInputFactory" org.eclipse.jdt.ui.ClassFileIdentifier="=Client/\/usr\/lib\/jvm\/java-7-openjdk-amd64\/jre\/lib\/rt.jar&lt;java.io(DataInputStream.class"/>
+<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="0" selectionTopPixel="0"/>
+</editor>
+<editor id="org.eclipse.jdt.ui.CompilationUnitEditor" name="UpdateContactsThread.java" partName="UpdateContactsThread.java" path="/home/sebastian/Documents/Programmieren/Java/Eclipse/EasyChat/Client/src/logic/UpdateContactsThread.java" title="UpdateContactsThread.java" tooltip="Client/src/logic/UpdateContactsThread.java" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/Client/src/logic/UpdateContactsThread.java"/>
+<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="919" selectionTopPixel="36"/>
+</editor>
+<editor id="org.eclipse.jdt.ui.CompilationUnitEditor" name="RegistrationWindow.java" partName="RegistrationWindow.java" path="/home/sebastian/Documents/Programmieren/Java/Eclipse/EasyChat/Client/src/ui/RegistrationWindow.java" title="RegistrationWindow.java" tooltip="Client/src/ui/RegistrationWindow.java" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/Client/src/ui/RegistrationWindow.java"/>
+<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="2607" selectionTopPixel="1141"/>
+</editor>
+<editor id="org.eclipse.jdt.ui.CompilationUnitEditor" name="NameFieldListener.java" partName="NameFieldListener.java" path="/home/sebastian/Documents/Programmieren/Java/Eclipse/EasyChat/Client/src/ui/NameFieldListener.java" title="NameFieldListener.java" tooltip="Client/src/ui/NameFieldListener.java" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/Client/src/ui/NameFieldListener.java"/>
+<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="0" selectionTopPixel="631"/>
+</editor>
+<editor id="org.eclipse.jdt.ui.CompilationUnitEditor" name="ImageUserPack.java" partName="ImageUserPack.java" path="/home/sebastian/Documents/Programmieren/Java/Eclipse/EasyChat/Server/src/logic/ImageUserPack.java" title="ImageUserPack.java" tooltip="Server/src/logic/ImageUserPack.java" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/Server/src/logic/ImageUserPack.java"/>
+<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="183" selectionTopPixel="0"/>
+</editor>
+<editor id="org.eclipse.jdt.ui.ClassFileEditor" name="DataOutputStream.class" partName="DataOutputStream.class" path="/tmp/DataOutputStream.class5176497150506297783.class" title="DataOutputStream.class" tooltip="java.io.DataOutputStream" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.jdt.ui.ClassFileEditorInputFactory" org.eclipse.jdt.ui.ClassFileIdentifier="=Client/\/usr\/lib\/jvm\/java-7-openjdk-amd64\/jre\/lib\/rt.jar&lt;java.io(DataOutputStream.class"/>
+<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="0" selectionTopPixel="0"/>
+</editor>
+<editor id="org.eclipse.jdt.ui.ClassFileEditor" name="ConnectionImpl.class" partName="ConnectionImpl.class" path="/tmp/ConnectionImpl.class4551470118070073009.class" title="ConnectionImpl.class" tooltip="com.mysql.jdbc.ConnectionImpl" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.jdt.ui.ClassFileEditorInputFactory" org.eclipse.jdt.ui.ClassFileIdentifier="=Server/\/home\/sebastian\/Documents\/Programmieren\/Java\/lib\/jdbc_j\/mysql-connector-java-5.1.34\/mysql-connector-java-5.1.34-bin.jar&lt;com.mysql.jdbc(ConnectionImpl.class"/>
+<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="0" selectionTopPixel="0"/>
+</editor>
+<editor id="org.eclipse.jdt.ui.ClassFileEditor" name="ResultSetImpl.class" partName="ResultSetImpl.class" path="/tmp/ResultSetImpl.class8916964402991477560.class" title="ResultSetImpl.class" tooltip="com.mysql.jdbc.ResultSetImpl" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.jdt.ui.ClassFileEditorInputFactory" org.eclipse.jdt.ui.ClassFileIdentifier="=Server/\/home\/sebastian\/Documents\/Programmieren\/Java\/lib\/jdbc_j\/mysql-connector-java-5.1.34\/mysql-connector-java-5.1.34-bin.jar&lt;com.mysql.jdbc(ResultSetImpl.class"/>
 <editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="0" selectionTopPixel="0"/>
 </editor>
 </editors>
@@ -89,13 +124,14 @@
 <view id="org.eclipse.search.ui.views.SearchView" partName="Search">
 <viewState isPinned="false">
 <view IMemento.internal.id="org.eclipse.jdt.ui.JavaSearchResultPage" org.eclipse.jdt.search.resultpage.grouping="3" org.eclipse.jdt.search.resultpage.limit="1000" org.eclipse.jdt.search.resultpage.limit_enabled="TRUE" org.eclipse.jdt.search.resultpage.sorting="1" org.eclipse.search.lastActivation="1" org.eclipse.search.resultpage.layout="2"/>
-<view IMemento.internal.id="org.eclipse.search.text.FileSearchResultPage" org.eclipse.search.lastActivation="2" org.eclipse.search.resultpage.layout="2" org.eclipse.search.resultpage.limit="1000" org.eclipse.search.resultpage.sorting="2"/>
 <view IMemento.internal.id="" org.eclipse.search.lastActivation="0"/>
+<view IMemento.internal.id="org.eclipse.search.text.FileSearchResultPage" org.eclipse.search.lastActivation="2" org.eclipse.search.resultpage.layout="2" org.eclipse.search.resultpage.limit="1000" org.eclipse.search.resultpage.sorting="2"/>
 </viewState>
 </view>
 <view id="org.eclipse.ui.views.ProblemView" partName="Problems">
 <viewState PRIMARY_SORT_FIELD="org.eclipse.ui.ide.severityAndDescriptionField" categoryGroup="org.eclipse.ui.ide.severity" markerContentGenerator="org.eclipse.ui.ide.problemsGenerator" partName="Problems">
 <expanded>
+<category IMemento.internal.id="Warnings (60 items)"/>
 <category IMemento.internal.id="Errors"/>
 <category IMemento.internal.id="Warnings"/>
 </expanded>
@@ -157,7 +193,7 @@
 </view>
 <view id="org.eclipse.jdt.ui.JavadocView" partName="Javadoc"/>
 </views>
-<perspectives activePart="org.eclipse.jdt.ui.CompilationUnitEditor" activePerspective="org.eclipse.jdt.ui.JavaPerspective">
+<perspectives activePart="org.eclipse.ui.console.ConsoleView" activePerspective="org.eclipse.jdt.ui.JavaPerspective">
 <perspective editorAreaTrimState="2" editorAreaVisible="1" fixed="0" version="0.016">
 <descriptor class="org.eclipse.ui.internal.ide.application.ResourcePerspective" id="org.eclipse.ui.resourcePerspective" label="Resource"/>
 <alwaysOnActionSet id="org.eclipse.ui.cheatsheets.actionSet"/>
@@ -350,162 +386,161 @@
 <workingSets/>
 <navigationHistory>
 <editors>
-<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/Client/src/ui/LoginWindow.java"/>
-<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/Client/src/ui/NameFieldListener.java"/>
-<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/Client/src/ui/PwdFieldListener.java"/>
-<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/Client/src/ui/ChatWindow.java"/>
-<editor factoryID="org.eclipse.jdt.ui.ClassFileEditorInputFactory" id="org.eclipse.jdt.ui.ClassFileEditor" org.eclipse.jdt.ui.ClassFileIdentifier="=Client/\/usr\/lib\/jvm\/java-7-openjdk-amd64\/jre\/lib\/rt.jar&lt;java.io(DataInputStream.class"/>
 <editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/Server/src/logic/ProcessingThread.java"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/Client/src/logic/ClientLogic.java"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/Server/src/data/DatabaseConnection.java"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/Client/src/ui/RegistrationWindow.java"/>
+<editor factoryID="org.eclipse.jdt.ui.ClassFileEditorInputFactory" id="org.eclipse.jdt.ui.ClassFileEditor" org.eclipse.jdt.ui.ClassFileIdentifier="=Server/\/home\/sebastian\/Documents\/Programmieren\/Java\/lib\/jdbc_j\/mysql-connector-java-5.1.34\/mysql-connector-java-5.1.34-bin.jar&lt;com.mysql.jdbc(ResultSetImpl.class"/>
 </editors>
-<item historyLabel="PwdFieldListener.java" index="2">
-<position info="not_deleted" x="68" y="0"/>
+<item historyLabel="ClientLogic.java" index="1">
+<position info="not_deleted" x="12515" y="0"/>
 </item>
-<item historyLabel="PwdFieldListener.java" index="2">
-<position info="not_deleted" x="295" y="0"/>
+<item historyLabel="ClientLogic.java" index="1">
+<position info="not_deleted" x="7800" y="18"/>
 </item>
-<item historyLabel="NameFieldListener.java" index="1">
-<position info="not_deleted" x="1375" y="152"/>
+<item historyLabel="ClientLogic.java" index="1">
+<position info="not_deleted" x="9037" y="0"/>
 </item>
-<item historyLabel="NameFieldListener.java" index="1">
-<position info="not_deleted" x="478" y="0"/>
+<item historyLabel="ClientLogic.java" index="1">
+<position info="not_deleted" x="9096" y="0"/>
 </item>
-<item historyLabel="LoginWindow.java" index="0">
-<position info="not_deleted" x="3081" y="0"/>
+<item historyLabel="RegistrationWindow.java" index="3">
+<position info="not_deleted" x="2613" y="0"/>
 </item>
-<item historyLabel="NameFieldListener.java" index="1">
-<position info="not_deleted" x="480" y="0"/>
+<item historyLabel="ClientLogic.java" index="1">
+<position info="not_deleted" x="9074" y="0"/>
 </item>
-<item historyLabel="PwdFieldListener.java" index="2">
-<position info="not_deleted" x="295" y="0"/>
+<item historyLabel="RegistrationWindow.java" index="3">
+<position info="not_deleted" x="2927" y="0"/>
 </item>
-<item historyLabel="PwdFieldListener.java" index="2">
-<position info="not_deleted" x="572" y="0"/>
+<item historyLabel="ClientLogic.java" index="1">
+<position info="not_deleted" x="9074" y="0"/>
 </item>
-<item historyLabel="NameFieldListener.java" index="1">
-<position info="not_deleted" x="998" y="189"/>
+<item historyLabel="RegistrationWindow.java" index="3">
+<position info="not_deleted" x="3090" y="0"/>
 </item>
-<item historyLabel="PwdFieldListener.java" index="2">
-<position info="not_deleted" x="572" y="0"/>
+<item historyLabel="ProcessingThread.java" index="0">
+<position info="not_deleted" x="5748" y="0"/>
 </item>
-<item historyLabel="PwdFieldListener.java" index="2">
-<position info="not_deleted" x="426" y="0"/>
+<item historyLabel="DatabaseConnection.java" index="2">
+<position info="not_deleted" x="2267" y="0"/>
 </item>
-<item historyLabel="NameFieldListener.java" index="1">
-<position info="not_deleted" x="990" y="0"/>
+<item historyLabel="DatabaseConnection.java" index="2">
+<position info="not_deleted" x="2580" y="0"/>
 </item>
-<item historyLabel="PwdFieldListener.java" index="2">
-<position info="not_deleted" x="372" y="0"/>
-</item>
-<item historyLabel="NameFieldListener.java" index="1">
-<position info="not_deleted" x="314" y="0"/>
-</item>
-<item historyLabel="PwdFieldListener.java" index="2">
-<position info="not_deleted" x="300" y="0"/>
-</item>
-<item historyLabel="NameFieldListener.java" index="1">
-<position info="not_deleted" x="314" y="0"/>
-</item>
-<item historyLabel="LoginWindow.java" index="0">
+<item historyLabel="DatabaseConnection.java" index="2">
 <position/>
 </item>
-<item historyLabel="PwdFieldListener.java" index="2">
-<position info="not_deleted" x="300" y="0"/>
+<item historyLabel="DatabaseConnection.java" index="2">
+<position info="not_deleted" x="3074" y="0"/>
 </item>
-<item historyLabel="PwdFieldListener.java" index="2">
-<position info="not_deleted" x="573" y="0"/>
+<item historyLabel="DatabaseConnection.java" index="2">
+<position/>
 </item>
-<item historyLabel="PwdFieldListener.java" index="2">
-<position info="not_deleted" x="373" y="0"/>
+<item historyLabel="DatabaseConnection.java" index="2">
+<position info="not_deleted" x="2811" y="0"/>
 </item>
-<item historyLabel="PwdFieldListener.java" index="2">
-<position info="not_deleted" x="577" y="0"/>
+<item historyLabel="ProcessingThread.java" index="0">
+<position info="not_deleted" x="5748" y="0"/>
 </item>
-<item historyLabel="NameFieldListener.java" index="1">
-<position info="not_deleted" x="615" y="79"/>
+<item historyLabel="ProcessingThread.java" index="0">
+<position info="not_deleted" x="5675" y="0"/>
 </item>
-<item historyLabel="PwdFieldListener.java" index="2">
-<position info="not_deleted" x="577" y="0"/>
+<item historyLabel="ProcessingThread.java" index="0">
+<position info="not_deleted" x="5748" y="0"/>
 </item>
-<item historyLabel="PwdFieldListener.java" index="2">
-<position info="not_deleted" x="372" y="0"/>
+<item historyLabel="ProcessingThread.java" index="0">
+<position info="not_deleted" x="5989" y="0"/>
 </item>
-<item historyLabel="NameFieldListener.java" index="1">
-<position info="not_deleted" x="615" y="79"/>
+<item historyLabel="ProcessingThread.java" index="0">
+<position info="not_deleted" x="5989" y="0"/>
 </item>
-<item historyLabel="LoginWindow.java" index="0">
-<position info="not_deleted" x="3208" y="0"/>
-</item>
-<item historyLabel="LoginWindow.java" index="0">
-<position info="not_deleted" x="3223" y="0"/>
-</item>
-<item historyLabel="LoginWindow.java" index="0">
-<position info="not_deleted" x="3362" y="0"/>
-</item>
-<item historyLabel="NameFieldListener.java" index="1">
-<position info="not_deleted" x="615" y="79"/>
-</item>
-<item historyLabel="PwdFieldListener.java" index="2">
-<position info="not_deleted" x="372" y="0"/>
-</item>
-<item historyLabel="NameFieldListener.java" index="1">
-<position info="not_deleted" x="615" y="79"/>
-</item>
-<item historyLabel="LoginWindow.java" index="0">
-<position info="not_deleted" x="1016" y="0"/>
-</item>
-<item historyLabel="ChatWindow.java" index="3">
-<position info="not_deleted" x="4272" y="0"/>
-</item>
-<item historyLabel="ChatWindow.java" index="3">
-<position info="not_deleted" x="1392" y="0"/>
-</item>
-<item historyLabel="LoginWindow.java" index="0">
-<position info="not_deleted" x="1160" y="0"/>
-</item>
-<item historyLabel="DataInputStream.class" index="4">
+<item historyLabel="ResultSetImpl.class" index="4">
 <position info="not_deleted" x="0" y="0"/>
 </item>
-<item historyLabel="ProcessingThread.java" index="5">
-<position info="not_deleted" x="2244" y="38"/>
+<item historyLabel="DatabaseConnection.java" index="2">
+<position/>
 </item>
-<item historyLabel="ProcessingThread.java" index="5">
-<position info="not_deleted" x="3653" y="0"/>
+<item historyLabel="DatabaseConnection.java" index="2">
+<position/>
 </item>
-<item historyLabel="ProcessingThread.java" index="5">
-<position info="not_deleted" x="3715" y="0"/>
+<item historyLabel="DatabaseConnection.java" index="2">
+<position/>
 </item>
-<item historyLabel="ProcessingThread.java" index="5">
-<position info="not_deleted" x="801" y="3"/>
+<item historyLabel="DatabaseConnection.java" index="2">
+<position info="not_deleted" x="3068" y="0"/>
 </item>
-<item historyLabel="ProcessingThread.java" index="5">
-<position info="not_deleted" x="1496" y="0"/>
+<item historyLabel="DatabaseConnection.java" index="2">
+<position info="not_deleted" x="3023" y="0"/>
 </item>
-<item historyLabel="ProcessingThread.java" index="5">
-<position info="not_deleted" x="2244" y="38"/>
+<item historyLabel="RegistrationWindow.java" index="3">
+<position info="not_deleted" x="2607" y="0"/>
 </item>
-<item historyLabel="ProcessingThread.java" index="5">
-<position info="not_deleted" x="3715" y="0"/>
+<item historyLabel="ClientLogic.java" index="1">
+<position info="not_deleted" x="9074" y="0"/>
 </item>
-<item historyLabel="ProcessingThread.java" index="5">
-<position info="not_deleted" x="3677" y="16"/>
+<item historyLabel="ClientLogic.java" index="1">
+<position info="not_deleted" x="8780" y="0"/>
 </item>
-<item historyLabel="ProcessingThread.java" index="5">
-<position info="not_deleted" x="1922" y="0"/>
+<item historyLabel="ProcessingThread.java" index="0">
+<position info="not_deleted" x="6045" y="0"/>
 </item>
-<item historyLabel="ProcessingThread.java" index="5">
-<position info="not_deleted" x="1922" y="0"/>
+<item historyLabel="DatabaseConnection.java" index="2">
+<position info="not_deleted" x="2982" y="0"/>
 </item>
-<item historyLabel="ProcessingThread.java" index="5">
-<position info="not_deleted" x="1922" y="0"/>
+<item historyLabel="ProcessingThread.java" index="0">
+<position info="not_deleted" x="6045" y="0"/>
 </item>
-<item historyLabel="ChatWindow.java" index="3">
-<position info="not_deleted" x="1358" y="0"/>
+<item historyLabel="ProcessingThread.java" index="0">
+<position info="not_deleted" x="5739" y="0"/>
 </item>
-<item historyLabel="LoginWindow.java" index="0">
-<position info="not_deleted" x="745" y="0"/>
+<item historyLabel="ProcessingThread.java" index="0">
+<position info="not_deleted" x="5748" y="0"/>
 </item>
-<item active="true" historyLabel="ChatWindow.java" index="3">
-<position info="not_deleted" x="1358" y="0"/>
+<item historyLabel="ClientLogic.java" index="1">
+<position info="not_deleted" x="8780" y="0"/>
+</item>
+<item historyLabel="RegistrationWindow.java" index="3">
+<position info="not_deleted" x="2607" y="0"/>
+</item>
+<item historyLabel="ClientLogic.java" index="1">
+<position info="not_deleted" x="8780" y="0"/>
+</item>
+<item historyLabel="ClientLogic.java" index="1">
+<position info="not_deleted" x="8991" y="0"/>
+</item>
+<item historyLabel="ClientLogic.java" index="1">
+<position info="not_deleted" x="8999" y="0"/>
+</item>
+<item historyLabel="ClientLogic.java" index="1">
+<position info="not_deleted" x="8883" y="0"/>
+</item>
+<item historyLabel="ClientLogic.java" index="1">
+<position info="not_deleted" x="8913" y="0"/>
+</item>
+<item historyLabel="ProcessingThread.java" index="0">
+<position info="not_deleted" x="5748" y="0"/>
+</item>
+<item historyLabel="ClientLogic.java" index="1">
+<position info="not_deleted" x="8913" y="0"/>
+</item>
+<item historyLabel="ProcessingThread.java" index="0">
+<position info="not_deleted" x="5984" y="0"/>
+</item>
+<item historyLabel="ClientLogic.java" index="1">
+<position info="not_deleted" x="8913" y="0"/>
+</item>
+<item historyLabel="ProcessingThread.java" index="0">
+<position info="not_deleted" x="5984" y="0"/>
+</item>
+<item historyLabel="ClientLogic.java" index="1">
+<position info="not_deleted" x="8991" y="0"/>
+</item>
+<item historyLabel="ProcessingThread.java" index="0">
+<position info="not_deleted" x="5835" y="0"/>
+</item>
+<item active="true" historyLabel="ClientLogic.java" index="1">
+<position info="not_deleted" x="8991" y="0"/>
 </item>
 </navigationHistory>
 <input factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/" type="8"/>
@@ -524,6 +559,27 @@
 </trimLayout>
 </window>
 <mruList>
+<file factoryID="org.eclipse.jdt.ui.ClassFileEditorInputFactory" id="org.eclipse.jdt.ui.ClassFileEditor" name="ResultSetImpl.class" tooltip="com.mysql.jdbc.ResultSetImpl">
+<persistable org.eclipse.jdt.ui.ClassFileIdentifier="=Server/\/home\/sebastian\/Documents\/Programmieren\/Java\/lib\/jdbc_j\/mysql-connector-java-5.1.34\/mysql-connector-java-5.1.34-bin.jar&lt;com.mysql.jdbc(ResultSetImpl.class"/>
+</file>
+<file factoryID="org.eclipse.jdt.ui.ClassFileEditorInputFactory" id="org.eclipse.jdt.ui.ClassFileEditor" name="ConnectionImpl.class" tooltip="com.mysql.jdbc.ConnectionImpl">
+<persistable org.eclipse.jdt.ui.ClassFileIdentifier="=Server/\/home\/sebastian\/Documents\/Programmieren\/Java\/lib\/jdbc_j\/mysql-connector-java-5.1.34\/mysql-connector-java-5.1.34-bin.jar&lt;com.mysql.jdbc(ConnectionImpl.class"/>
+</file>
+<file factoryID="org.eclipse.jdt.ui.ClassFileEditorInputFactory" id="org.eclipse.jdt.ui.ClassFileEditor" name="DataOutputStream.class" tooltip="java.io.DataOutputStream">
+<persistable org.eclipse.jdt.ui.ClassFileIdentifier="=Client/\/usr\/lib\/jvm\/java-7-openjdk-amd64\/jre\/lib\/rt.jar&lt;java.io(DataOutputStream.class"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="imageUserPack.java" tooltip="Server/src/logic/imageUserPack.java">
+<persistable path="/Server/src/logic/imageUserPack.java"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="NameFieldListener.java" tooltip="Client/src/ui/NameFieldListener.java">
+<persistable path="/Client/src/ui/NameFieldListener.java"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="RegistrationWindow.java" tooltip="Client/src/ui/RegistrationWindow.java">
+<persistable path="/Client/src/ui/RegistrationWindow.java"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="UpdateContactsThread.java" tooltip="Client/src/logic/UpdateContactsThread.java">
+<persistable path="/Client/src/logic/UpdateContactsThread.java"/>
+</file>
 <file factoryID="org.eclipse.jdt.ui.ClassFileEditorInputFactory" id="org.eclipse.jdt.ui.ClassFileEditor" name="DataInputStream.class" tooltip="java.io.DataInputStream">
 <persistable org.eclipse.jdt.ui.ClassFileIdentifier="=Client/\/usr\/lib\/jvm\/java-7-openjdk-amd64\/jre\/lib\/rt.jar&lt;java.io(DataInputStream.class"/>
 </file>
@@ -547,27 +603,6 @@
 </file>
 <file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="DatabaseConnection.java" tooltip="Server/src/data/DatabaseConnection.java">
 <persistable path="/Server/src/data/DatabaseConnection.java"/>
-</file>
-<file factoryID="org.eclipse.jdt.ui.ClassFileEditorInputFactory" id="org.eclipse.jdt.ui.ClassFileEditor" name="StatementImpl.class" tooltip="com.mysql.jdbc.StatementImpl">
-<persistable org.eclipse.jdt.ui.ClassFileIdentifier="=TestSQL/lib\/mysql-connector-java-5.1.34-bin.jar&lt;com.mysql.jdbc(StatementImpl.class"/>
-</file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="test.java" tooltip="TestPro/src/test.java">
-<persistable path="/TestPro/src/test.java"/>
-</file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.wb.core.guiEditor" name="nhzasnzra.java" tooltip="fuuuuu/src/components/nhzasnzra.java">
-<persistable path="/fuuuuu/src/components/nhzasnzra.java"/>
-</file>
-<file factoryID="org.eclipse.jdt.ui.ClassFileEditorInputFactory" id="org.eclipse.jdt.ui.ClassFileEditor" name="ImageIcon.class" tooltip="javax.swing.ImageIcon">
-<persistable org.eclipse.jdt.ui.ClassFileIdentifier="=Client/\/usr\/lib\/jvm\/java-7-openjdk-amd64\/jre\/lib\/rt.jar&lt;javax.swing(ImageIcon.class"/>
-</file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.ant.ui.internal.editor.AntEditor" name="build.xml" tooltip="TestPro/components-ConverterProject/build.xml">
-<persistable path="/TestPro/components-ConverterProject/build.xml"/>
-</file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="ConversionPanel.java" tooltip="TestPro/components-ConverterProject/src/components/ConversionPanel.java">
-<persistable path="/TestPro/components-ConverterProject/src/components/ConversionPanel.java"/>
-</file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="JListRenderer.java" tooltip="Client/src/ui/JListRenderer.java">
-<persistable path="/Client/src/ui/JListRenderer.java"/>
 </file>
 </mruList>
 </workbench>

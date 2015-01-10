@@ -2,13 +2,25 @@ package logic;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.net.ConnectException;
-import java.net.InetAddress;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.ListCellRenderer;
 
 import ui.ChatWindow;
+import ui.JListRenderer;
 import ui.LoginWindow;
 
 //TODO ThreadPool angucken
@@ -25,7 +37,10 @@ public class ClientLogic {
 	private int port;
 	private boolean loggedIn;
 	private int loginAttempts;
-	private UpdateContactsThread updateContactsThread; 
+	private UpdateContactsThread updateContactsThread;
+	public static final Pattern protocolPattern = Pattern.compile("<.*?/>");
+//	boolean demandUsers;
+//	private UpdateContactsThread updateContactsThread;
 	// just for test purposes
 	int sent = 0;
 
@@ -34,6 +49,7 @@ public class ClientLogic {
 		this.loggedIn = false;
 		this.port = port;
 		this.loginAttempts = 0;
+
 		// window = new ChatWindow(userName, this);
 
 		try {
@@ -72,28 +88,55 @@ public class ClientLogic {
 			@Override
 			public void run() {
 				int receivedTotal = 0;
+				Matcher matcher = null;
 				while (true) {
 					while (connected) {
+//						if(demandUsers){
+//							try {
+//								demandOnlineUsers();
+//							} catch (IOException e) {
+//								// TODO Auto-generated catch block
+//								e.printStackTrace();
+//							}
+						
 						try {
 							String received = inStream.readUTF();
-							if (!received.equals("<whoareyou/>")) {
+							System.out.println(received);
+							matcher = protocolPattern.matcher(received);
+							matcher.lookingAt();
+							//first match
+							String protocolMark = matcher.group(0);
+
+							
+							switch (protocolMark){
+								
+							case "<whoareyou/>":
+								System.out.println("registrate in else case");
+								logInAtServer();
+								break;
+								
+							case "<UserList/>":
+								applyOnlineUsers(received);
+								break;
+								
+							case "<message/>":
 								if (window == null) {
 									window = new ChatWindow("EasyChat",
 											ClientLogic.this);
 									loginWindow.closeFrame();
+									updateContactsThread.start();//TODO dont forget
 								}
-								if (receivedTotal == 0)
+								if (receivedTotal == 0) {
 									window.getChatDisplay().setText("");
+								}
+								//10 = lenght of <message/>
+								received = received.substring(10);
 								displayMessage(received);
 								receivedTotal++;
-							} else {
-								System.out.println("registrate in else case");
-								// TODO alles außer kontrolle, was die
-								// initialisierungen der drei Klassen angeht.
-								// Reihenfolge und Assoziationen müssen neu
-								// geklärt werden.
-								logInAtServer();
+								
+								break;
 							}
+							
 						} catch (IOException e) {
 							System.out
 									.println("Nachricht konnte nicht empfangen werden");
@@ -101,11 +144,15 @@ public class ClientLogic {
 							connected = false;
 							loggedIn = false;
 						}
+				
 					}// while
 					reastablishConnection();
 				}// while
 			}// run
 		};
+		
+		updateContactsThread = new UpdateContactsThread(window, this);
+		
 
 		// Thread senderThread = new Thread() {
 		// @Override
@@ -117,6 +164,7 @@ public class ClientLogic {
 		// };
 
 		receiverThread.start();
+		
 		// senderThread.start();
 
 		// outStream.close();
@@ -245,7 +293,7 @@ public class ClientLogic {
 		// else
 		if (connected) {
 			try {
-				outStream.writeUTF(adressee + "<adressee/>" + message);
+				outStream.writeUTF("<message/>"+adressee + "<adressee/>" + message);
 			} catch (IOException e) {
 				System.out.println("Nachricht konnte nicht versand werden");
 				e.printStackTrace();
@@ -260,8 +308,8 @@ public class ClientLogic {
 
 	}
 
-	public boolean registrateAtServer(String name, char[] password1,
-			char[] password2) {
+	public int registrateAtServer(String name, char[] password1,
+			char[] password2, String filePath) {
 		boolean equal = true;
 		if (password1.length == password2.length) {
 			for (int i = 0; i < password1.length; i++) {
@@ -273,15 +321,40 @@ public class ClientLogic {
 		}
 
 		if (equal) {
-			
+			byte[] byteArray = null;
+			int picLenght = 0;
+			try {
+				File file = new File(filePath);
+				FileInputStream fis = new FileInputStream(file);
+				picLenght = (int) file.length();
+				byteArray = new byte[picLenght];
+				fis.read(byteArray);
+				fis.close();
+			} catch (FileNotFoundException e1) {
+				//return 1 means error with file
+				return 1;
+			} catch (IOException e) {
+				return 1;
+//				e.printStackTrace();
+			}
+
 			try {
 				String pw = "";
-				for(int i=0;i<password1.length;i++){
+				for (int i = 0; i < password1.length; i++) {
 					pw += password1[i];
 				}
 				System.out.println("versuche zu registrieren");
 				outStream.writeUTF("<registrate/><name/>" + name + "<pwd/>"
-						+ pw);
+						+ pw+"<lenght/>"+picLenght);
+				outStream.write(byteArray);
+				System.out.println("searching answer");
+				//TODO empfängt nichts
+				String answer = inStream.readUTF();
+				System.out.println("answer found "+answer);
+				if(answer.equals("<nameTaken/>")){
+					//3 means name already taken
+					return 3;
+				} 
 				System.out.println("registreieren klappt");
 				pw = "";
 				deletePassword(password1);
@@ -290,25 +363,112 @@ public class ClientLogic {
 				System.out.println("registrieren klappt nicht");
 				e.printStackTrace();
 			}
-			return true;
+			//return 0 menas success
+			return 0;
 		} else {
 			System.out.println("false");
 			deletePassword(password1);
 			deletePassword(password2);
-			return false;
+			//2 means password not equal
+			return 2;
 		}
-		
+
 	}
-	
-	public void deletePassword(char[] password){
+
+	public void deletePassword(char[] password) {
 		for (int i = 0; i < password.length; i++) {
 			password[0] = 0;
 		}
 	}
-	
-	public String[] demandOnlineUsers(){
+
+	public void demandOnlineUsers() throws IOException {
+		if(connected)
 		outStream.writeUTF("<getUsers/>");
-		return null;
+		System.out.println("demanded users");
+	}
+
+	
+	//TODO unschöne regex
+	public void applyOnlineUsers(String message) {
+		System.out.println("String mit allen usern drin: "+message);
+		ArrayList<String> arrayList = new ArrayList<String>();
+		HashMap<String, byte[]> nameImgMap = new HashMap<String, byte[]>();
+		Pattern p = Pattern.compile("<user>.*?<user/>");
+		Matcher m = p.matcher(message);
+//		m.lookingAt();
+		// Lenght of the tag <UserList><users/>
+//		message = message.substring(18);
+		//TODO boolean always true
+		System.out.println("message "+message);
+		while (m.find()) {
+//			// add everything bevor tag to array
+//			arrayList.add(message.split(Pattern.quote("<user/>"))[0]);
+//			System.out.println("added to arrayList "+message.split(Pattern.quote("<user/>"))[0]);
+//			// new string is everything behind tag
+//			try {
+//			message = message.split(Pattern.quote("<users/>"))[1];
+//			System.out.println("new message "+message);
+//			} catch (Exception e){
+//				e.printStackTrace();
+//				break;
+//			}
+			String toAdd = m.group();
+			//lenght of first tag
+			toAdd = toAdd.substring(6);
+			//minus the last tag
+			toAdd = toAdd.substring(0, toAdd.length()-7);
+			System.out.println("toAdd: "+toAdd);
+			String name = toAdd.split(Pattern.quote("<l/>"))[0];
+			int lenght = Integer.parseInt(toAdd.split(Pattern.quote("<l/>"))[1]);
+//			String name = toAdd.split(Pattern.quote("<img/>"))[0];
+			arrayList.add(name);
+//			toAdd = toAdd.split(Pattern.quote("<img/>"))[1];
+//			toAdd = toAdd.substring(6);
+			
+			
+//				String[] regRes = toAdd.split(Pattern.quote("</>"));
+//				byte[] b = new byte[regRes.length];
+//				for(int i = 0; i<regRes.length;i++){
+//					b[i] = Byte.parseByte(regRes[i]);
+//				}
+			byte [] b = new byte[lenght];
+			for(int i = 0; i<b.length;i++){
+				try {
+					b[i] = inStream.readByte();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			
+			nameImgMap.put(name, b);
+				
+///////////////////////////////////////////////////
+				
+//JFrame frame = new JFrame();
+//JLabel label = new JLabel(new ImageIcon(b));
+//frame.getContentPane().add(label);
+//label.setVisible(true);
+//frame.pack();
+//frame.setVisible(true);
+//System.out.println("benutzer empfangen");
+
+////////////////////////////////////////////////////////////
+			
+			
+			
+		}
+		
+		JList<String> userList = window.getUserList();
+		System.out.println("fdehoögrewthw"+arrayList);
+		String[] result = new String[arrayList.size()];
+		for(int i = 0; i<result.length;i++){
+			result[i] = arrayList.get(i);
+		}
+		String selected	= userList.getSelectedValue();
+		userList.setListData(result);
+		((JListRenderer)userList.getCellRenderer()).setPictures(nameImgMap);
+		userList.setSelectedValue(selected, true);
 	}
 
 	// public void setWindow(ChatWindow window){

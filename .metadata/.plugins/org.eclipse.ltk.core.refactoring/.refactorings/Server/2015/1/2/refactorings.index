@@ -2,3 +2,9 @@
 1420638124430	Delete element
 1420638129282	Delete element
 1420638135818	Delete element
+1420842894089	Rename method 'getOnlineUsers'
+1420856554425	Rename type 'imageUserPack'
+1420856645394	Rename method 'getOnlineUsersAsString'
+1420858104653	Rename method 'getOnlineUsersAsObject'
+1420902741487	Rename method 'sendImageFromDB'
+1420903007347	Rename method 'getOnlineUsersAsString'

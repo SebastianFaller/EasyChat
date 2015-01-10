@@ -63,8 +63,8 @@ public class ChatWindow extends JFrame{
 		chatDisplay.setPreferredSize(new Dimension(chatDisplay.getWidth(), (this.getHeight()*3/4)));
 
 		
-		String[] userArray =  {"user1", "user2", "user3"};
-		userList = new JList<String>(userArray);
+//		String[] userArray =  {"user1", "user2", "user3"};
+		userList = new JList<String>();
 		userList.setPreferredSize(new Dimension(this.getWidth()/4, userList.getHeight()));
 //		userList.setAlignmentX(CENTER_ALIGNMENT);
 //		userList.setAlignmentY(CENTER_ALIGNMENT);

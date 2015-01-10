@@ -1,0 +1,9 @@
+package logic;
+
+public class imageUserPack {
+	
+	public imageUserPack(){
+		
+	}
+
+}

@@ -14,3 +14,6 @@
 1420668103455	Rename field 'w'
 1420668278137	Rename local variable 'w'
 1420668346116	Rename local variable 'w'
+1420837822865	Rename local variable 'messages'
+1420842417250	Rename method 'returnOnlineUsers'
+1420906701175	Rename local variable 'byteArray'
