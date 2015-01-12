@@ -1,0 +1,5 @@
+1421006970590	Rename local variable 'answer'
+1421009443385	Rename method 'setregWindow'
+1421018286046	Rename local variable 'name'
+1421018308748	Rename local variable 'newText'
+1421020250124	Extract local variable 'jList'

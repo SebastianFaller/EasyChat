@@ -99,7 +99,7 @@ public class RegistrationWindow extends UserInputDialog {
 		int b = RegistrationWindow.this.clientLogic.registrateAtServer(name, password1, password2, filePath);
 		switch(b) {
 		case 0:
-			this.closeFrame();
+//			this.closeFrame();
 			break;
 		case 1:
 			failedLabel.setText("Pfad falsch");
@@ -111,14 +111,16 @@ public class RegistrationWindow extends UserInputDialog {
 			failedLabel.setVisible(true);
 			RegistrationWindow.this.pack();
 			break;
-		case 3:
-			failedLabel.setText("Name bereits vergeben");
-			failedLabel.setVisible(true);
-			RegistrationWindow.this.pack();
-			break;
 			
 		} 
 		for(int i = 0; i<password1.length ; i++) password1[i] = 0;
-		for(int i = 0; i<password1.length ; i++) password2[i] = 0;
+		for(int i = 0; i<password2.length ; i++) password2[i] = 0;
+	}
+	
+	public void showNameTaken(){
+		failedLabel.setText("Name bereits vergeben");
+		failedLabel.setVisible(true);
+		this.pack();
+		this.setVisible(true);
 	}
 }

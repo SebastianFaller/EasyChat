@@ -199,25 +199,37 @@ public class ProcessingThread extends Thread {
 				name = name.substring(7);
 				System.out.println(name);
 				database = new DatabaseConnection();
-				boolean nameTaken = database.nameTaken(name);
-				if (!nameTaken) {
-					System.out.println("name not taken");
-					database.makeNewRowInUsers(name, pwd, image);
-					try {
-						//TODO empfängt er nicht
-						outStream.writeUTF("<succsess/>");
-					} catch (IOException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
+				boolean nameTaken = database.isNameTaken(name);
+				try {
+					if(nameTaken){
+					outStream.writeUTF("<nameTaken/>true");
+					} else {
+						outStream.writeUTF("<nameTaken/>false");
+						database.makeNewRowInUsers(name, pwd, image);
 					}
-				} else {
-					try {
-						outStream.writeUTF("<nameTaken/>");
-					} catch (IOException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
 				}
+//				if (!nameTaken) {
+//					System.out.println("name not taken");
+//					database.makeNewRowInUsers(name, pwd, image);
+//					try {
+//						//TODO empfängt er nicht
+//						
+//						outStream.writeBoolean(v);
+//					} catch (IOException e1) {
+//						// TODO Auto-generated catch block
+//						e1.printStackTrace();
+//					} 
+//				} else {
+//					try {
+//						outStream.writeUTF("<nameTaken/>");
+//					} catch (IOException e1) {
+//						// TODO Auto-generated catch block
+//						e1.printStackTrace();
+//					}
+//				}
 				// try {
 				// // database.closeDatabaseConnection(); //TODO dont forget
 				// //TODO stoppd here!!

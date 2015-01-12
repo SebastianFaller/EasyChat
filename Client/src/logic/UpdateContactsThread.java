@@ -1,6 +1,7 @@
 package logic;
 
 import java.io.IOException;
+import java.util.HashMap;
 
 import javax.swing.JList;
 
@@ -12,10 +13,12 @@ public class UpdateContactsThread extends Thread{
 	private ClientLogic clientLogic;
 	private String[] list;
 	
+	
 	public UpdateContactsThread(ChatWindow w, ClientLogic c){
 		window = w;
 		clientLogic = c;
 		list = null;
+		
 	}
 	
 	@Override
@@ -25,12 +28,7 @@ public class UpdateContactsThread extends Thread{
 			window.getUserList().setVisible(true);
 			}
 //			clientLogic.demandUsers = false;
-		try {
-			Thread.sleep(2000);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		
 //		clientLogic.demandUsers = true;
 		try {
 			clientLogic.demandOnlineUsers();
@@ -38,9 +36,18 @@ public class UpdateContactsThread extends Thread{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		
+		
 //		String[] usersArray = 
 //		JList<String> userList = window.getUserList();
 //		userList.setListData(users);
+		try {
+			Thread.sleep(2000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	}
 

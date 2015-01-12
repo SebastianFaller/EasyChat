@@ -13,6 +13,7 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.WindowEvent;
+import java.util.HashMap;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -25,6 +26,8 @@ import javax.swing.JPanel;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
 import javax.swing.border.TitledBorder;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 import logic.ClientLogic;
 
@@ -40,6 +43,8 @@ public class ChatWindow extends JFrame{
 	private ClientLogic logic;
 	private JList<String> userList;
 	private final String buttonText = "Senden";
+	private String currentUser;
+	
 	
 	
 	public ChatWindow(String s, final ClientLogic logic){
@@ -130,7 +135,23 @@ public class ChatWindow extends JFrame{
 				}
 			}
 		});
+		userList.addListSelectionListener(new ListSelectionListener() {
+			
+			@Override
+			public void valueChanged(ListSelectionEvent arg0) {
+//				ListSelectionModel lsm = (ListSelectionModel)arg0.getSource();
+	
+				String oldUser = currentUser;
+				JList<String> jList = (JList<String>) arg0.getSource();
+				currentUser = jList.getSelectedValue();
+	
+				
+				System.out.println("old user "+oldUser+" newUser "+currentUser);
+				ChatWindow.this.logic.changeCurrentUser(oldUser, currentUser);
 		
+				
+			}
+		});
 		
 		sendButton = new JButton(buttonText);
 		sendButton.addActionListener(new ActionListener() {
@@ -150,6 +171,7 @@ public class ChatWindow extends JFrame{
 
 		//always needs to be the last statement
 		this.setVisible(true);
+		
 	}//constructor
 	
 	private void sendToLogic(){
@@ -175,6 +197,8 @@ public class ChatWindow extends JFrame{
 	public JList<String> getUserList(){
 		return userList;
 	}
+	
+	
 
 //	public static void main(String args[]){
 //		new ChatWindow("EasyChat");

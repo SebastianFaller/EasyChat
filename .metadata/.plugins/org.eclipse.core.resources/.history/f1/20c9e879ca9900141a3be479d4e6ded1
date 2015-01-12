@@ -1,0 +1,277 @@
+package logic;
+
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.net.Socket;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+
+import com.mysql.jdbc.PreparedStatement;
+
+import data.DatabaseConnection;
+
+public class ProcessingThread extends Thread {
+
+	private Socket clientSocket;
+	private DataInputStream inStream;
+	private DataOutputStream outStream;
+	private HashMap<String, Socket> clients;
+	private static final Pattern protocolMark = Pattern.compile("<.*?/>");
+	public static int number = 0;
+	private String name;
+	DatabaseConnection database;
+
+	public ProcessingThread(Socket clientSocket, HashMap clients)
+			throws IOException {
+
+		this.clientSocket = clientSocket;
+		this.clients = clients;
+		inStream = new DataInputStream(clientSocket.getInputStream());
+		outStream = new DataOutputStream(clientSocket.getOutputStream());
+		number++;
+		database = new DatabaseConnection();
+	}
+
+	@Override
+	public void run() {
+		// while(true){
+		logInClient();
+		try {
+			Matcher matcher = null;
+			while (true) {
+
+				//
+				String received = inStream.readUTF();
+				System.out.println("angekommen: " + received);
+
+				matcher = protocolMark.matcher(received);
+				matcher.lookingAt();
+				switch (matcher.group()) {
+
+				case "<message/>":
+					received = received.substring(10);
+					// TODO protocol macht hier keinen Sinn in sich/ ist
+					// inkonsistent
+					String[] segs = received
+							.split(Pattern.quote("<adressee/>"));
+					System.out.println(segs[0]);
+
+					try {
+						Socket adressee = clients.get(segs[0]);
+						DataOutputStream dOut = new DataOutputStream(
+								adressee.getOutputStream());
+						System.out.println("outstream build");
+						dOut.writeUTF("<message/>" + segs[1]);
+						System.out.println("Hier fertig");
+						System.out.println(number);
+					} catch (NullPointerException e) {
+						System.out.println("its a trap!!!!");
+						// outStream.writeUTF("<Error/>SpecifiyAdressee");
+					}
+
+					break;
+
+				case "<getUsers/>":
+					sendOnlineUsers();
+					// System.out.println("gib ihm");
+					// System.out.println("result: "+result);
+					// //TODO dieser String schießt alles ab. Viel zu groß
+					// outStream.writeUTF("<UserList/>"+result);
+
+					break;
+
+				}
+
+			}
+
+			// dOut.close();
+			// adressee.close();
+			// inStream.close();
+			// outStream.close();
+			// clientSocket.close();
+			//
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			// e.printStackTrace();
+			System.out.println("Server lost connection to  client");
+		}
+
+		finally {
+			try {
+				closeStreams();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+
+		// }
+	}
+
+	public void logInClient() {
+		boolean logginSuccessful = false;
+		do {
+			try {
+				outStream.writeUTF("<whoareyou/>");
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			String loginData = null;
+			while (loginData == null) {
+				try {
+					loginData = inStream.readUTF();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+					break;
+				}
+			}
+			// zerlege string. zweiter teil ist name
+			// System.out.println("temp name 1: " + tempName);
+			System.out.println("loginData" + loginData);
+			try {
+				// this statement throws ArrayyOutOfBoundsExc when first
+				// statement is not login
+				loginData = loginData.split(Pattern.quote("<login/>"))[1];
+				String pwd = loginData.split(Pattern.quote("<pwd/>"))[1];
+				name = loginData.split(Pattern.quote("<pwd/>"))[0];
+				// ohne führendes <name/>
+				name = name.substring(7);
+				System.out.println(name);
+
+				String[] s = database.getPwdToUserFromDB(name);
+				// try {
+				// // database.closeDatabaseConnection();TODO dont forget
+				// } catch (SQLException e) {
+				// // TODO Auto-generated catch block
+				// e.printStackTrace();
+				// }
+
+				if ((s != null) && (s[1].equals(pwd)) && (s[0]).equals(name)) {
+					try {
+						System.out.println("succsses");
+						outStream.writeUTF("<message/>Wilkommen! " + name);
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					clients.put(name, clientSocket);
+					logginSuccessful = true;
+					System.out.println("pwd laut sql: " + s[1]);
+				}
+
+			} catch (ArrayIndexOutOfBoundsException e) {
+				// catches if string doesnt start with "<login/>"
+				loginData = loginData.split(Pattern.quote("<registrate/>"))[1];
+				String pwd = loginData.split(Pattern.quote("<pwd/>"))[1];
+				String name = loginData.split(Pattern.quote("<pwd/>"))[0];
+				String picLenghtString = pwd.split(Pattern.quote("<lenght/>"))[1];
+				int lenght = Integer.parseInt(picLenghtString);
+				pwd = pwd.split(Pattern.quote("<lenght/>"))[0];
+				byte[] image = new byte[lenght];
+				try {
+					inStream.read(image);
+				} catch (IOException e1) {
+					System.out.println("bild lesen verkackt");
+					e1.printStackTrace();
+				}
+
+				// /////////////////////////////////////////////////
+
+				// JFrame frame = new JFrame();
+				// JLabel label = new JLabel(new ImageIcon(image));
+				// frame.getContentPane().add(label);
+				// label.setVisible(true);
+				// frame.pack();
+				// frame.setVisible(true);
+
+				// //////////////////////////////////////////////////////////
+				// ohne führendes <name/>
+				name = name.substring(7);
+				System.out.println(name);
+				database = new DatabaseConnection();
+				boolean nameTaken = database.nameTaken(name);
+				if (!nameTaken) {
+					System.out.println("name not taken");
+					database.makeNewRowInUsers(name, pwd, image);
+					try {
+						//TODO empfängt er nicht
+						outStream.writeUTF("<succsess/>");
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				} else {
+					try {
+						outStream.writeUTF("<nameTaken/>");
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				}
+				// try {
+				// // database.closeDatabaseConnection(); //TODO dont forget
+				// //TODO stoppd here!!
+				// } catch (SQLException sqle) {
+				// // TODO Auto-generated catch block
+				// e.printStackTrace();
+				// }
+
+			}
+			System.out.println("String loginData " + loginData);
+			// Unterscheidung login oder registration
+			// System.out.println("temp name 2: " + tempName);
+
+		} while (!logginSuccessful);
+
+	}
+
+	public void closeStreams() throws IOException {
+		clients.remove(name);
+		inStream.close();
+		outStream.close();
+
+	}
+
+	public void sendOnlineUsers() throws IOException {
+		// ArrayList<ImageUserPack> packs = new ArrayList<ImageUserPack>();
+		String result = "";
+		for (String k : clients.keySet()) {
+			// byte[] b = database.getImageToUser(k);
+			System.out.println("k: " + k);
+			result += "<user>" + k;
+			byte[] b = database.getImageToUser(k);
+			result += "<l/>" + b.length + "<user/>";
+			// packs.add(new ImageUserPack(k, b));
+		}
+
+		outStream.writeUTF("<UserList/>" + result);
+
+		for (String k : clients.keySet()) {
+			byte[] b = database.getImageToUser(k);
+			outStream.write(b);
+		}
+
+	}
+
+	// case "<getUsers/>":
+	// String result = sendOnlineUsers();
+	// System.out.println("gib ihm");
+	// System.out.println("result: "+result);
+	// //TODO dieser String schießt alles ab. Viel zu groß
+	// outStream.writeUTF("<UserList/>"+result);
+	// sendImagesFromDB();
+	// break;
+	//
+	// }
+
+}

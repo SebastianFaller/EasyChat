@@ -52,7 +52,8 @@ public class LoginWindow extends UserInputDialog{
 			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				new RegistrationWindow(clientLogic);
+				RegistrationWindow r = new RegistrationWindow(clientLogic);
+				LoginWindow.this.clientLogic.setRegWindow(r);
 				LoginWindow.this.setVisible(false);
 				
 			}

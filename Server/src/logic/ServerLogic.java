@@ -2,10 +2,13 @@ package logic;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.HashMap;
 import java.util.regex.Pattern;
+
+import javax.swing.JOptionPane;
 
 public class ServerLogic {
 
@@ -54,7 +57,9 @@ public class ServerLogic {
 	public static void main(String args[]) throws IOException {
 		ServerLogic s = new ServerLogic(1025);
 		System.out.println("server build");
+		JOptionPane.showMessageDialog(null, "Server läuft");
 		s.acceptRoutine();
+		
 	}
 
 }

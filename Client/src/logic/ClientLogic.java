@@ -1,13 +1,16 @@
 package logic;
 
+import java.awt.Color;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.InetAddress;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Scanner;
 import java.util.regex.Matcher;
@@ -17,11 +20,13 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.ListCellRenderer;
 
 import ui.ChatWindow;
 import ui.JListRenderer;
 import ui.LoginWindow;
+import ui.RegistrationWindow;
 
 //TODO ThreadPool angucken
 
@@ -39,10 +44,15 @@ public class ClientLogic {
 	private int loginAttempts;
 	private UpdateContactsThread updateContactsThread;
 	public static final Pattern protocolPattern = Pattern.compile("<.*?/>");
+	private RegistrationWindow regWindow;
+	private String[] onlineUseres;
+	private HashMap<String, String> textMap;
+	private String ip = "87.173.84.135";
+	
 //	boolean demandUsers;
 //	private UpdateContactsThread updateContactsThread;
 	// just for test purposes
-	int sent = 0;
+	private int sent = 0;
 
 	public ClientLogic(int port) {
 		this.userName = null;
@@ -50,10 +60,12 @@ public class ClientLogic {
 		this.port = port;
 		this.loginAttempts = 0;
 
+		textMap = new HashMap<String, String>();
+
 		// window = new ChatWindow(userName, this);
 
 		try {
-			connectWithServer("localHost", port);
+			connectWithServer(ip, port);
 			connected = true;
 		} catch (IOException e) {
 			System.out.println("Connection failed");
@@ -100,6 +112,7 @@ public class ClientLogic {
 //							}
 						
 						try {
+							System.out.println("in der run");
 							String received = inStream.readUTF();
 							System.out.println(received);
 							matcher = protocolPattern.matcher(received);
@@ -121,7 +134,7 @@ public class ClientLogic {
 								
 							case "<message/>":
 								if (window == null) {
-									window = new ChatWindow("EasyChat",
+									window = new ChatWindow("EasyChat - "+userName,
 											ClientLogic.this);
 									loginWindow.closeFrame();
 									updateContactsThread.start();//TODO dont forget
@@ -131,11 +144,33 @@ public class ClientLogic {
 								}
 								//10 = lenght of <message/>
 								received = received.substring(10);
-								displayMessage(received);
+								String message, sender = null;
+								try{
+								 message = received.split(Pattern.quote("<sender/>"))[1];
+								 sender = received.split(Pattern.quote("<sender/>"))[0];
+								} catch (ArrayIndexOutOfBoundsException ae){
+									 message = received;
+								}
+								
+								displayMessage(message, sender);
 								receivedTotal++;
 								
 								break;
+								
+							case "<nameTaken/>":
+								received = received.split(Pattern.quote("<nameTaken/>"))[1];
+								if(received.equals("true")){
+									regWindow.showNameTaken();
+//									loginWindow.setVisible(false);
+								} else {
+									regWindow.closeFrame();
+								}
+								
+								break;
+								
 							}
+							
+							
 							
 						} catch (IOException e) {
 							System.out
@@ -176,22 +211,25 @@ public class ClientLogic {
 	// TODO Define own "ConnectionFaileException" or something like that
 	public void connectWithServer(String dontknow, int port) throws IOException {
 		System.out.println("connectWithServer");
-		socket = new Socket("localHost", port);
+//		InetAddress adress = InetAddress.g
+		socket = new Socket(ip, port);
 		inStream = new DataInputStream(socket.getInputStream());
 		outStream = new DataOutputStream(socket.getOutputStream());
+		System.out.println("done ceonnection");
 	}
 
 	public synchronized boolean reastablishConnection() {
 		System.out.println("Connection to Server lost");
 		System.out.println("reconnect? y/n");
-		Scanner scanner = new Scanner(System.in);
-		String yOrN = scanner.nextLine();
-		System.out.println(yOrN);
-		if ((yOrN.charAt(0) == 'y') && (!connected)) {
+		int select = JOptionPane.showConfirmDialog(null, "Connection to Server lost - reconnect?","Connection lost",  JOptionPane.YES_NO_OPTION);
+//		Scanner scanner = new Scanner(System.in);
+//		String yOrN = scanner.nextLine();
+		System.out.println(select);
+		if ((select == JOptionPane.OK_OPTION) && (!connected)) {
 			System.out.println("even tried");
 			// scanner.close();
 			try {
-				connectWithServer("blabala", 1025);
+				connectWithServer("localhost", 1025);
 				connected = true;
 				System.out.println("succsess");
 			} catch (IOException e) {
@@ -234,6 +272,7 @@ public class ClientLogic {
 				}
 				outStream.writeUTF("<login/><user/>" + userName + "<pwd/>"
 						+ pwd);
+				this.userName = userName;
 				System.out.println("password: " + pwd);
 				pwd = "";
 				deletePassword(password);
@@ -260,9 +299,17 @@ public class ClientLogic {
 		// this.window = window;
 	}
 
-	public void displayMessage(String message) {
+	public void displayMessage(String message, String sender) {
 		if (window != null) {
-			window.getChatDisplay().append(message + "\n");
+			changeCurrentUser(window.getUserList().getSelectedValue(), sender);
+			if(sender != null){
+//				window.getChatDisplay().setForeground(Color.RED);
+			window.getChatDisplay().append("\n"+sender+"\t"+(new Date()).toString());
+//			window.getChatDisplay().setForeground(Color.BLACK);
+			window.getChatDisplay().append("\n"+message + "\n");
+			} else {
+				window.getChatDisplay().append(message + "\n");
+			}
 		} else {
 			System.out.println(message + "| Client erhalten");
 		}
@@ -293,7 +340,20 @@ public class ClientLogic {
 		// else
 		if (connected) {
 			try {
-				outStream.writeUTF("<message/>"+adressee + "<adressee/>" + message);
+				if(userName != null){
+					window.getChatDisplay().append("\nIch:\t"+(new Date().toString())+"\n"+message+"\n");
+				outStream.writeUTF("<message/>"+adressee + "<adressee/>" +userName+"<sender/>"+ message);
+//				String text = textMap.get(adressee);
+//				window.getChatDisplay().setForeground(Color.GREEN);
+				
+//				window.getChatDisplay().setForeground(Color.BLACK);
+//				window.getChatDisplay().append();
+//				text += "Ich:\n"+message;
+//				textMap.put(adressee, text);
+//				System.out.println("text "+text);
+				} else {
+					outStream.writeUTF("<message/>"+adressee + "<adressee/>"+ message);
+				}
 			} catch (IOException e) {
 				System.out.println("Nachricht konnte nicht versand werden");
 				e.printStackTrace();
@@ -301,7 +361,7 @@ public class ClientLogic {
 				loggedIn = false;
 			}
 		} else {
-			System.out.println("not cennected sending impossible");
+			System.out.println("not connected sending impossible");
 			reastablishConnection();
 
 		}
@@ -310,6 +370,8 @@ public class ClientLogic {
 
 	public int registrateAtServer(String name, char[] password1,
 			char[] password2, String filePath) {
+		
+	
 		boolean equal = true;
 		if (password1.length == password2.length) {
 			for (int i = 0; i < password1.length; i++) {
@@ -349,12 +411,12 @@ public class ClientLogic {
 				outStream.write(byteArray);
 				System.out.println("searching answer");
 				//TODO empfängt nichts
-				String answer = inStream.readUTF();
-				System.out.println("answer found "+answer);
-				if(answer.equals("<nameTaken/>")){
-					//3 means name already taken
-					return 3;
-				} 
+//				boolean answerNameTaken = inStream.readBoolean();
+//				System.out.println("answer found "+answerNameTaken);
+//				if(answerNameTaken){
+//					//3 means name already taken
+//					return 3;
+//				} 
 				System.out.println("registreieren klappt");
 				pw = "";
 				deletePassword(password1);
@@ -362,7 +424,7 @@ public class ClientLogic {
 			} catch (IOException e) {
 				System.out.println("registrieren klappt nicht");
 				e.printStackTrace();
-			}
+			} 
 			//return 0 menas success
 			return 0;
 		} else {
@@ -375,6 +437,7 @@ public class ClientLogic {
 
 	}
 
+	
 	public void deletePassword(char[] password) {
 		for (int i = 0; i < password.length; i++) {
 			password[0] = 0;
@@ -466,10 +529,32 @@ public class ClientLogic {
 			result[i] = arrayList.get(i);
 		}
 		String selected	= userList.getSelectedValue();
+//		while((userList = window.getUserList()) == null);
+		System.out.println("userList"+userList);
+		System.out.println("result"+result);
+		
+		if((userList != null) && (result != null)){
 		userList.setListData(result);
+		}
+		
 		((JListRenderer)userList.getCellRenderer()).setPictures(nameImgMap);
 		userList.setSelectedValue(selected, true);
+		onlineUseres = result;
 	}
+	
+	public void setRegWindow (RegistrationWindow regWindow){
+	this.regWindow = regWindow;
+	}
+	
+	public void changeCurrentUser(String oldName, String newName){
+		if(oldName !=null && newName != null){
+		String oldText = textMap.get(oldName);
+		oldText = window.getChatDisplay().getText();
+		textMap.put(oldName, oldText);
+		window.getChatDisplay().setText(textMap.get(newName));
+		}
+	}
+		
 
 	// public void setWindow(ChatWindow window){
 	// this.window = window;
