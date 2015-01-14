@@ -1,0 +1,20 @@
+package ui;
+
+import java.util.HashMap;
+
+public interface ClientUiInterface {
+	
+	public void closeFrame();
+
+}
+
+interface ChatWindowInterface extends ClientUiInterface{
+	
+	public String getCurrentChatPartner();
+	
+	public void displayMessage(String message, String sender);
+	
+	public void updateOnlineUsers(HashMap<String, byte[]> nameImgMap);
+
+	public void resetText();
+}

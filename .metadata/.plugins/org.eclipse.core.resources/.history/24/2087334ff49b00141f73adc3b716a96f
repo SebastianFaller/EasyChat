@@ -1,0 +1,93 @@
+package logic;
+
+import java.io.IOException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import ui.ChatWindow;
+
+
+public class ReceiverThread extends Thread{
+	
+	private ClientLogic clientLogic;
+	
+	public ReceiverThread(ClientLogic clientLogic){
+		this.clientLogic = clientLogic;
+	}
+	
+	@Override
+	public void run() {
+		int receivedTotal = 0;
+		Matcher matcher = null;
+		while (true) {
+			System.out.println("started reveiving routine");
+			while (clientLogic.isConnected()) {
+				try {
+					String received = clientLogic.getInStream().readUTF();
+					System.out.println("received String: " + received);
+					// check with regex for "command"
+					matcher = protocolPattern.matcher(received);
+					matcher.lookingAt();
+					// first match
+					String protocolMark = matcher.group(0);
+
+					switch (protocolMark) {
+
+					case "<whoareyou/>":
+						startLoginDialog();
+						break;
+
+					case "<UserList/>":
+						//Server "returns" the Users that are online right now
+						applyOnlineUsers(received);
+						break;
+
+					case "<message/>":
+						if (window == null) {
+							window = new ChatWindow("EasyChat - "
+									+ userName, ClientLogic.this);
+							loginWindow.closeFrame();
+							updateContactsThread.start();
+						}
+						
+						if (receivedTotal == 0) {
+							window.getChatDisplay().setText("");
+						}
+						// 10 = lenght of <message/>
+						received = received.substring(protocolMark.length());
+						String message, sender = null;
+						try {
+							//message is the part befor the tag <sender/>
+							message = received.split(Pattern
+									.quote("<sender/>"))[1];
+							//sender is the part after the tag <sender/>
+							sender = received.split(Pattern
+									.quote("<sender/>"))[0];
+						} catch (ArrayIndexOutOfBoundsException ae) {
+							//catches if there is no <sender/> specified
+							message = received;
+						}
+						showMessage(message, sender);
+						receivedTotal++;
+						break;
+
+					case "<nameTaken/>":
+						received = received.split(Pattern
+								.quote("<nameTaken/>"))[1];
+						if (received.equals("true")) {
+							regWindow.showNameTaken();
+						} else {
+							regWindow.closeFrame();
+						}
+						break;
+					}//switch
+
+				} catch (IOException e) {
+					System.out.println("Receiving message failed");
+					connected = false;
+				}
+			}// while connected
+			reastablishConnection();
+		}// infinite loop
+	}// run
+}

@@ -1,0 +1,22 @@
+package logic;
+
+import java.io.DataInputStream;
+import java.io.IOException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import ui.ChatWindow;
+
+
+public class ReceiverThread extends Thread{
+	
+	private ClientLogic clientLogic;
+	private DataInputStream inStream;
+	
+	public ReceiverThread(ClientLogic clientLogic, DataInputStream inStream){
+		this.clientLogic = clientLogic;
+		this.inStream = inStream;
+	}
+	
+	
+}

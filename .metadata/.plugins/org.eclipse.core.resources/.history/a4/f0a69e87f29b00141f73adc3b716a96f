@@ -1,0 +1,418 @@
+package logic;
+
+import java.awt.Color;
+import java.awt.DisplayMode;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.net.InetAddress;
+import java.net.Socket;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JOptionPane;
+import javax.swing.ListCellRenderer;
+
+import ui.ChatWindow;
+import ui.JListRenderer;
+import ui.LoginWindow;
+import ui.RegistrationWindow;
+
+//TODO ThreadPool angucken
+
+public class ClientLogic {
+
+	// logical fields
+	private Socket socket;
+	private DataInputStream inStream;
+	private DataOutputStream outStream;
+	private UpdateContactsThread updateContactsThread;
+	private HashMap<String, String> historyTexts;
+
+	private boolean connected;
+	private boolean loggedIn;
+	private int loginAttempts;
+
+	private String userName;
+
+	// optical fields
+	private ChatWindow window;
+	private LoginWindow loginWindow;
+	private RegistrationWindow regWindow;
+
+	// static fields
+	private static final int port = 10300;
+	private static final String ip = "localhost";// if server works: 87.173.90.234
+	public static final Pattern protocolPattern = Pattern.compile("<.*?/>");
+	private static final Pattern userExpresionPattern = Pattern.compile("<user>.*?<user/>");
+
+	public ClientLogic() {
+		// if ipv4 nessecary uncomment next line:
+		// System.setProperty("java.net.preferIPv4Stack" , "true");
+		this.userName = null;
+		this.loggedIn = false;
+		this.loginAttempts = 0;
+
+		historyTexts = new HashMap<String, String>();
+
+		try {
+			connectWithServer();
+			connected = true;
+		} catch (IOException e) {
+			System.out.println("Connection failed");
+			connected = false;
+			loggedIn = false;
+			while (!reastablishConnection())
+				;
+		}
+	}// constructor
+
+	public void routine() {
+
+		final Thread receiverThread = new Thread() {
+			@Override
+			public void run() {
+				int receivedTotal = 0;
+				Matcher matcher = null;
+				while (true) {
+					System.out.println("started reveiving routine");
+					while (connected) {
+						try {
+							String received = inStream.readUTF();
+							System.out.println("received String: " + received);
+							// check with regex for "command"
+							matcher = protocolPattern.matcher(received);
+							matcher.lookingAt();
+							// first match
+							String protocolMark = matcher.group(0);
+
+							switch (protocolMark) {
+
+							case "<whoareyou/>":
+								startLoginDialog();
+								break;
+
+							case "<UserList/>":
+								//Server "returns" the Users that are online right now
+								applyOnlineUsers(received);
+								break;
+
+							case "<message/>":
+								if (window == null) {
+									window = new ChatWindow("EasyChat - "
+											+ userName, ClientLogic.this);
+									loginWindow.closeFrame();
+									updateContactsThread.start();
+								}
+								
+								if (receivedTotal == 0) {
+									window.getChatDisplay().setText("");
+								}
+								// 10 = lenght of <message/>
+								received = received.substring(protocolMark.length());
+								String message, sender = null;
+								try {
+									//message is the part befor the tag <sender/>
+									message = received.split(Pattern
+											.quote("<sender/>"))[1];
+									//sender is the part after the tag <sender/>
+									sender = received.split(Pattern
+											.quote("<sender/>"))[0];
+								} catch (ArrayIndexOutOfBoundsException ae) {
+									//catches if there is no <sender/> specified
+									message = received;
+								}
+								showMessage(message, sender);
+								receivedTotal++;
+								break;
+
+							case "<nameTaken/>":
+								received = received.split(Pattern
+										.quote("<nameTaken/>"))[1];
+								if (received.equals("true")) {
+									regWindow.showNameTaken();
+								} else {
+									regWindow.closeFrame();
+								}
+								break;
+							}//switch
+
+						} catch (IOException e) {
+							System.out.println("Receiving message failed");
+							connected = false;
+							loggedIn = false;
+						}
+					}// while connected
+					reastablishConnection();
+				}// infinite loop
+			}// run
+		};
+
+		updateContactsThread = new UpdateContactsThread(window, this);
+
+		receiverThread.start();
+		
+	}// clientSendAndReceive
+
+	// TODO Find out what first Arg does
+	// TODO Define own "ConnectionFaileException" or something like that
+	public void connectWithServer() throws IOException {
+		System.out.println("connectWithServer");
+		InetAddress address = InetAddress.getByName(ClientLogic.ip);
+		socket = new Socket(address, ClientLogic.port);
+		inStream = new DataInputStream(socket.getInputStream());
+		outStream = new DataOutputStream(socket.getOutputStream());
+		System.out.println("done connecting");
+	}
+
+	public boolean reastablishConnection() {
+		System.out.println("Connection to Server lost");
+		
+		//Show Dialog
+		int select = JOptionPane.showConfirmDialog(null,
+				"Connection to Server lost - reconnect?", "Connection lost",
+				JOptionPane.YES_NO_OPTION);
+
+		if ((select == JOptionPane.OK_OPTION) && (!connected)) {
+			try {
+				connectWithServer();
+				connected = true;
+				System.out.println("Connecting succsessful");
+			} catch (IOException e) {
+				System.out.println("Connection still not established");
+				connected = false;
+				loggedIn = false;
+				return false;
+			}// catch
+			return true;
+		}// if
+		else {
+			//selected Option was "no"
+			return false;
+		}
+	}
+
+	public void startLoginDialog() {
+		if (loginAttempts == 0) {
+			loginWindow = new LoginWindow(this);
+		} else {
+			loginWindow.loginFailed();
+		}
+	}
+
+	public void loginWithValues(char[] password, String userName) {
+		this.userName = userName;
+		do {
+			try {
+				/*Password is returned as char[] from JPasswordfield for safety purposes.
+				Thus I kept this type as far as possible. */
+				String pwdString = "";
+				for (int i = 0; i < password.length; i++) {
+					pwdString += password[i];
+				}
+				outStream.writeUTF("<login/><user/>" + userName + "<pwd/>"+ pwdString);
+				//reseting password for security purposes
+				pwdString = "";
+				deletePassword(password);
+				loginAttempts++;
+				
+			} catch (IOException e) {
+				System.out.println("login at the server failed");
+				connected = false;
+				loggedIn = false;
+				reastablishConnection();
+			}
+		} while (!connected);
+	}
+
+	public void showMessage(String message, String sender) {
+			changeCurrentChatPartner(window.getCurrentChatPartner(), sender);
+			if (sender != null) {
+//				window.getChatDisplay().append("\n" + sender + "\t" + (new Date()).toString());
+				window.displayMessage(message, sender);
+				saveToHistory(message, sender);
+//				window.getChatDisplay().append("\n" + message + "\n");
+			} else {
+				//if sender == null window will prompt without additional info
+				window.displayMessage(message, null);
+			}
+	}
+
+	public void sendMessage(String message, String addressee) {
+		if (connected) {
+			try {
+				if (userName != null) {
+//					window.getChatDisplay().append(
+//							"\nIch:\t" + (new Date().toString()) + "\n"
+//									+ message + "\n");
+					window.displayMessage(message, "Ich");
+					saveToHistoryAsOwn(message, addressee);
+					outStream.writeUTF("<message/>" + addressee + "<adressee/>"
+							+ userName + "<sender/>" + message);
+				} else {
+					outStream.writeUTF("<message/>" + addressee + "<adressee/>"
+							+ message);
+				}
+			} catch (IOException e) {
+				System.out.println("Sending message failed");
+				connected = false;
+				loggedIn = false;
+			}
+		} else {
+			System.out.println("not connected sending impossible");
+			reastablishConnection();
+		}
+	}
+
+	public int registrateAtServer(String name, char[] password1,
+			char[] password2, String filePath) {
+
+		boolean equal = true;
+		if (password1.length == password2.length) {
+			for (int i = 0; i < password1.length; i++) {
+				if (password1[i] != password2[i])
+					equal = false;
+			}
+		} else {
+			equal = false;
+		}
+
+		if (equal) {
+			byte[] imgArray = null;
+			int imgLenght = 0;
+			try {
+				File file = new File(filePath);
+				FileInputStream fis = new FileInputStream(file);
+				imgLenght = (int) file.length();
+				imgArray = new byte[imgLenght];
+				fis.read(imgArray);
+				fis.close();
+			} catch (IOException e ) {
+				// return 1 means error with file
+				return 1;
+			}
+
+			try {		
+				/*Password is returned as char[] from JPasswordfield for security purposes.
+				Thus I kept this type as far as possible. */
+				String pwdString = "";
+				for (int i = 0; i < password1.length; i++) {
+					pwdString += password1[i];
+				}
+				//write the info
+				outStream.writeUTF("<registrate/><name/>" + name + "<pwd/>"
+						+ pwdString + "<lenght/>" + imgLenght);
+				//write the picture
+				outStream.write(imgArray);
+				System.out.println("registration successful");
+				pwdString = "";
+				deletePassword(password1);
+				deletePassword(password2);
+			} catch (IOException e) {
+				System.out.println("registration failed");
+			}
+			// return 0 means success
+			return 0;
+		} else {
+			System.out.println("passwords not equal");
+			deletePassword(password1);
+			deletePassword(password2);
+			// 2 means password not equal
+			return 2;
+		}
+	}
+
+	public void deletePassword(char[] password) {
+		for (int i = 0; i < password.length; i++) {
+			password[0] = 0;
+		}
+	}
+
+	public void demandOnlineUsers() throws IOException {
+		if (connected)
+			outStream.writeUTF("<getUsers/>");
+	}
+
+	public void applyOnlineUsers(String message) {
+		HashMap<String, byte[]> nameImgMap = new HashMap<String, byte[]>();
+		//matches to "<user>.*?<user/>"
+		Matcher m = userExpresionPattern.matcher(message);
+		
+		while (m.find()) {
+			String contentOfTag = m.group();
+			//6 is length of opening tag
+			contentOfTag = contentOfTag.substring(6);
+			//-7 for closing tag
+			contentOfTag = contentOfTag.substring(0, contentOfTag.length() - 7);
+			//name is everything before <l/>
+			String name = contentOfTag.split(Pattern.quote("<l/>"))[0];
+			//length is everything after <l/>
+			int lenght = Integer
+					.parseInt(contentOfTag.split(Pattern.quote("<l/>"))[1]);
+			
+			//read in the bytes of the image
+			byte[] b = new byte[lenght];
+			for (int i = 0; i < b.length; i++) {
+				try {
+					b[i] = inStream.readByte();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+			//juxtapose name to matching image
+			nameImgMap.put(name, b);
+		}
+		window.updateOnlineUsers(nameImgMap);
+	}
+
+
+	public void changeCurrentChatPartner(String oldName, String newName) {
+		if (oldName != null && newName != null) {
+			String oldText = historyTexts.get(oldName);
+			oldText = window.getChatDisplay().getText();
+			historyTexts.put(oldName, oldText);
+			window.getChatDisplay().setText(historyTexts.get(newName));
+		}
+	}
+	
+	public void saveToHistory(String message, String sender){
+		if(sender != null){
+			String text = historyTexts.get(sender);
+			text += "\n" + sender + "\t" + (new Date()).toString()+"\n" + message + "\n";
+			historyTexts.put(sender, text);
+		} else {
+			
+		}
+	}
+	
+	public void saveToHistoryAsOwn(String message, String addresee){
+		if(addresee != null){
+			String text = historyTexts.get(addresee);
+			text += "\n" + "Ich: " + "\t" + (new Date()).toString()+"\n" + message + "\n";
+			historyTexts.put(addresee, text);
+		} else {
+			
+		}
+	}
+
+
+
+	public static void main(String args[]) throws Exception {
+
+		ClientLogic c = new ClientLogic();
+		c.routine();
+		System.out.println("client build");
+	}
+
+}

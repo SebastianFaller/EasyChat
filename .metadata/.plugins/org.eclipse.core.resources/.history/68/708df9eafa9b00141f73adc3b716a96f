@@ -1,0 +1,54 @@
+package logic;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.net.InetAddress;
+import java.net.InetSocketAddress;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.util.HashMap;
+
+import javax.swing.JOptionPane;
+
+public class ServerLogic {
+
+	private ServerSocket server;
+	private HashMap<String, Socket> clients;
+	private DataInputStream inStream;
+	private DataOutputStream outStream;
+	private static final String ip = "localhost";//87.173.90.234
+	private static final int port = 10300;
+
+	public ServerLogic() {
+		//if ipv4 is necessary 
+		//System.setProperty("java.net.preferIPv4Stack" , "true");
+		try {
+			InetAddress address = InetAddress.getByName(ip);
+			server = new ServerSocket();
+			server.bind(new InetSocketAddress(address, ServerLogic.port));
+			clients = new HashMap<String, Socket>();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}// constructor
+
+	public void acceptRoutine() throws IOException {
+		while (true) {
+			// Auf neuen Client warten
+			Socket tempClient = server.accept();
+			System.out.println("new socket accepted");
+			ProcessingThread t = new ProcessingThread(tempClient, clients);
+			t.setDaemon(true);
+			t.start();
+		}
+	}
+
+	public static void main(String args[]) throws IOException {
+		ServerLogic s = new ServerLogic(10300);
+		System.out.println("server build");
+		JOptionPane.showMessageDialog(null, "Server läuft");
+		s.acceptRoutine();
+		
+	}
+
+}

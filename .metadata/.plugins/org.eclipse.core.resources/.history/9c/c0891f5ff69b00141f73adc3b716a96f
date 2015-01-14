@@ -1,0 +1,13 @@
+package ui;
+
+public interface ClientUiInterface {
+	
+	public void closeFrame();
+
+}
+
+interface RegistrationWindowInterface extends ClientUiInterface{
+	
+	public void showNameTaken();
+
+}

@@ -1,0 +1,7 @@
+package ui;
+
+interface RegistrationWindowInterface extends ClientUiInterface{
+	
+	public void showNameTaken();
+
+}

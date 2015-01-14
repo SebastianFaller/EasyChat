@@ -1,7 +1,6 @@
 package ui;
 
 
-	import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
@@ -10,11 +9,8 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.WindowEvent;
 
-	import javax.swing.Box;
+import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -29,17 +25,12 @@ import logic.ClientLogic;
 public abstract class UserInputDialog extends JFrame {
 		
 		protected ClientLogic clientLogic;
-//		protected int port;
-		
 		protected JTextField userNameField;
 		protected JPasswordField passwordField;
 		protected JLabel nameLabel;
 		protected JLabel pwdLabel;
-//		private JPanel namePanel;
-//		private JPanel pwdPanel;
 		protected JPanel inputPanel;
 		protected JButton submitButton;
-//		protected JButton registrateButton;
 		protected JButton cancelButton;
 		protected JPanel buttonPanel;
 		protected JLabel failedLabel;
@@ -48,7 +39,6 @@ public abstract class UserInputDialog extends JFrame {
 		public UserInputDialog(ClientLogic clientLogic){
 			
 			this.clientLogic = clientLogic;
-//			setSize(400, 600);
 			setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			Container p = this.getContentPane();
 			p.setLayout(new BoxLayout(p ,BoxLayout.Y_AXIS ));
@@ -67,11 +57,9 @@ public abstract class UserInputDialog extends JFrame {
 			pwdLabel = new JLabel("Passwort:");
 			inputPanel = new JPanel();
 			buttonPanel = new JPanel();
-//			inputPanel.setLayout(new BorderLayout());
 			submitButton = new JButton();
 			cancelButton = new JButton("Abbrechen");
-//			registrateButton = new JButton("Registrieren");
-			
+
 			failedLabel = new JLabel();
 			failedLabel.setForeground(Color.RED);
 			failedLabel.setVisible(false);
@@ -106,7 +94,6 @@ public abstract class UserInputDialog extends JFrame {
 			
 			buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.X_AXIS));
 			buttonPanel.add(submitButton);
-//			buttonPanel.add(registrateButton);
 			buttonPanel.add(cancelButton);
 			
 			NameFieldListener l = new NameFieldListener(this, userNameField);
@@ -117,15 +104,6 @@ public abstract class UserInputDialog extends JFrame {
 			passwordField.addMouseListener(pwdl);
 			passwordField.addKeyListener(pwdl);
 			
-
-			
-//			loginButton.addActionListener(new ActionListener() {	
-//				@Override
-//				public void actionPerformed(ActionEvent arg0) {
-//					login();
-//				}
-//			});
-			
 			cancelButton.addActionListener(new ActionListener() {
 				
 				@Override
@@ -134,30 +112,6 @@ public abstract class UserInputDialog extends JFrame {
 				}
 			});
 			
-//			registrateButton.addActionListener(new ActionListener() {
-//				
-//				@Override
-//				public void actionPerformed(ActionEvent arg0) {
-//					new RegistrationWindow(clientLogic);
-//					
-//				}
-//			});
-			
-//			namePanel.add(nameLabel);
-//			namePanel.add(userNameField);
-//			
-//			pwdPanel.add(pwdLabel);
-//			pwdPanel.add(passwordField);
-//			
-//			
-//			
-//			inputPanel.add(namePanel, BorderLayout.WEST);
-//			inputPanel.add(pwdPanel, BorderLayout.CENTER);
-////			inputPanel.setPreferredSize(new Dimension(350, 600));
-//			
-//			loginButton.setAlignmentX(CENTER_ALIGNMENT);
-//			
-//			this.getContentPane().setLayout(new BoxLayout(this.getContentPane(), BoxLayout.Y_AXIS));
 			p.add(Box.createRigidArea(new Dimension(0, 5)));
 			p.add(inputPanel);
 			p.add(failedLabel);
@@ -167,18 +121,8 @@ public abstract class UserInputDialog extends JFrame {
 			p.add(Box.createRigidArea(new Dimension(0, 5)));
 			this.pack();
 			setVisible(true);
-			System.out.println("super done");
 		}
-//		
-//		public void login(){
-//			String user = userNameField.getText();
-//			char[] password = passwordField.getPassword();
-//			System.out.println("window password: "+password.toString());
-//			clientLogic.loginWithValues(password, user);
-//			for(int i = 0; i < password.length; i++){
-//				password[0] = 0;
-//			}
-//		}
+
 		
 		public void closeFrame(){
 			this.setVisible(false);
@@ -198,11 +142,5 @@ public abstract class UserInputDialog extends JFrame {
 		}
 		
 		public abstract void submit();
-
-//		public ClientLogic getClientLogic() {
-//			return clientLogic;
-//		}
-
-	
 
 }

@@ -1,0 +1,8 @@
+package ui;
+
+
+public interface ClientUiInterface {
+	
+	public void closeFrame();
+
+}

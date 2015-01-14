@@ -1,10 +1,7 @@
 package ui;
 
 import java.awt.BorderLayout;
-import java.awt.Component;
-import java.awt.Container;
 import java.awt.Dimension;
-import java.awt.LayoutManager;
 import java.awt.TextArea;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -13,45 +10,41 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.WindowEvent;
+import java.util.Date;
 import java.util.HashMap;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
-import javax.swing.DefaultCellEditor;
-import javax.swing.DefaultListCellRenderer;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.ListSelectionModel;
-import javax.swing.SwingConstants;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import logic.ClientLogic;
 
-public class ChatWindow extends JFrame{
-	
+public class ChatWindow extends JFrame implements ChatWindowInterface{
 
-	private final String title = "EasyChat";
+	
 	private JPanel textPanel;
 	private TextArea chatDisplay;
 	private JPanel inputPanel;
 	private TextArea inputField;
 	private JButton sendButton;
-	private ClientLogic logic;
+	private ClientLogic clientLogic;
 	private JList<String> userList;
-	private final String buttonText = "Senden";
 	private String currentUser;
+	private final String title = "EasyChat";
 	
 	
-	
-	public ChatWindow(String s, final ClientLogic logic){
+	public ChatWindow(String s, ClientLogic clientLogic){
 		super(s);
-		this.logic = logic;
+		this.clientLogic = clientLogic;
 		this.getContentPane().setLayout(new BorderLayout());
-		this.setDefaultCloseOperation(this.EXIT_ON_CLOSE);
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setSize(900, 600);
 		
 		
@@ -62,26 +55,20 @@ public class ChatWindow extends JFrame{
 		textPanel.setSize(300, 100);
 		textPanel.setLayout(new BorderLayout());
 		
-		chatDisplay = new TextArea("chat Display");
+		chatDisplay = new TextArea("Chat Display");
 		chatDisplay.setEditable(false);
-//		chatDisplay.setPreferedSize();
 		chatDisplay.setPreferredSize(new Dimension(chatDisplay.getWidth(), (this.getHeight()*3/4)));
 
-		
-//		String[] userArray =  {"user1", "user2", "user3"};
+
 		userList = new JList<String>();
 		userList.setPreferredSize(new Dimension(this.getWidth()/4, userList.getHeight()));
-//		userList.setAlignmentX(CENTER_ALIGNMENT);
-//		userList.setAlignmentY(CENTER_ALIGNMENT);
 		JListRenderer renderer = new JListRenderer();
-//		renderer.setHorizontalAlignment(SwingConstants.CENTER);
 		userList.setCellRenderer(renderer);
 		TitledBorder title = BorderFactory.createTitledBorder("Kontakte");
 		userList.setBorder(title);
 		userList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);		
-//		renderer.set
 
-		inputField = new TextArea("input field");
+		inputField = new TextArea("Input Field");
 		inputField.requestFocus();
 		inputField.addMouseListener(new MouseListener() {
 			
@@ -138,22 +125,15 @@ public class ChatWindow extends JFrame{
 		userList.addListSelectionListener(new ListSelectionListener() {
 			
 			@Override
-			public void valueChanged(ListSelectionEvent arg0) {
-//				ListSelectionModel lsm = (ListSelectionModel)arg0.getSource();
-	
+			public void valueChanged(ListSelectionEvent arg0) {	
 				String oldUser = currentUser;
 				JList<String> jList = (JList<String>) arg0.getSource();
 				currentUser = jList.getSelectedValue();
-	
-				
-				System.out.println("old user "+oldUser+" newUser "+currentUser);
-				ChatWindow.this.logic.changeCurrentUser(oldUser, currentUser);
-		
-				
+				ChatWindow.this.clientLogic.changeCurrentChatPartner(oldUser, currentUser);
 			}
 		});
 		
-		sendButton = new JButton(buttonText);
+		sendButton = new JButton("senden");
 		sendButton.addActionListener(new ActionListener() {
 			
 			@Override
@@ -176,7 +156,7 @@ public class ChatWindow extends JFrame{
 	
 	private void sendToLogic(){
 		String feed = inputField.getText();
-		logic.sendMessage(feed, userList.getSelectedValue());
+		clientLogic.sendMessage(feed, userList.getSelectedValue());
 		//TODO macht aus irgendnem Grund trotzdem Absatz
 		inputField.setText("");
 	}
@@ -197,12 +177,55 @@ public class ChatWindow extends JFrame{
 	public JList<String> getUserList(){
 		return userList;
 	}
-	
-	
 
-//	public static void main(String args[]){
-//		new ChatWindow("EasyChat");
-//	}
+	public String getCurrentChatPartner() {
+		String result = userList.getSelectedValue();
+		return result;
+	}
+	
+	public void displayMessage(String message, String sender){
+		if(sender != null){
+			chatDisplay.append("\n" + sender + "\t" + (new Date()).toString()+"\n" + message + "\n");
+		} else {
+			chatDisplay.append("\n" + message + "\n");
+		}
+	}
+
+	@Override
+	public void updateOnlineUsers(HashMap<String, byte[]> nameImgMap) {
+		String[] names = new String[nameImgMap.size()];
+		//extracting the names from the map
+		int i = 0;
+		for(String s : nameImgMap.keySet()){
+			names[i] = s;
+			i++;
+		}
+		//save the name of the selected for later
+		String selected = userList.getSelectedValue();
+		//set the names to be displayed by the JList
+		userList.setListData(names);
+		//set the Renderes picture name map
+		((JListRenderer)userList.getCellRenderer()).setPictures(nameImgMap);
+		//set the selected one again
+		userList.setSelectedValue(selected, true);
+		
+	}
+
+	@Override
+	public void setDisplayedText(String text) {
+		chatDisplay.setText(text);	
+	}
+
+	@Override
+	public String getDisplayedText() {
+		return chatDisplay.getText();
+	}
+
+	@Override
+	public void setVisible(Boolean b) {
+		setVisible(true);
+	}
+
 }
 
 

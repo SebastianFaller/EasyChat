@@ -2,8 +2,6 @@ package ui;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
-import java.awt.Font;
-import java.net.URL;
 import java.util.HashMap;
 
 import javax.swing.ImageIcon;
@@ -11,6 +9,7 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.ListCellRenderer;
+import javax.swing.SwingConstants;
 
 public class JListRenderer extends JPanel implements ListCellRenderer<Object> {
 
@@ -19,9 +18,6 @@ public class JListRenderer extends JPanel implements ListCellRenderer<Object> {
 	public JListRenderer() {
 		setOpaque(true);
 		setLayout(new BorderLayout());
-		System.out.println("Renderer build");
-		// setHorizontalAlignment(CENTER);
-		// setVerticalAlignment(CENTER);
 	}
 
 	@Override
@@ -29,8 +25,8 @@ public class JListRenderer extends JPanel implements ListCellRenderer<Object> {
 			int index, boolean isSelected, boolean cellHasFocus) {
 
 		this.removeAll();
-		// laut oracle ist der index param unsicher. es wird dieser weg
-		// empfohlen
+		// according to Oracle the index parameter is unsafe. Nonetheless the
+		// Oracle Tutorial teaches it this way.
 		String cellText = (String) value;
 
 		if (isSelected) {
@@ -40,48 +36,19 @@ public class JListRenderer extends JPanel implements ListCellRenderer<Object> {
 			setBackground(list.getBackground());
 			setForeground(list.getForeground());
 		}
-		// System.out.println("Wixxr");
-		// TODO various pics
 
 		if (pictures == null) {
-			//when no pictures from server are available
-			URL imgURL = getClass().getResource("/hagay.resized.jpg");
-			// String cellText =
-			// (String)list.getModel().getElementAt(selectedIndex);
-			// TODO strange null
-			if (imgURL != null) {
-				ImageIcon icon = new ImageIcon(imgURL);
-
-				
-				JLabel textLabel = new JLabel(cellText);
-				JLabel iconLabel = new JLabel(icon);
-
-				textLabel.setFont(list.getFont());
-				textLabel.setHorizontalAlignment(textLabel.CENTER);
-				add(textLabel, BorderLayout.CENTER);
-				add(iconLabel, BorderLayout.WEST);
-				// setIcon(icon);
-				// System.out.println(icon);
-				// setText(cellText);
-
-			} else {
-				// setText("no image found "+cellText);
-				JLabel textLabel = new JLabel("no image found " + cellText);
-				add(textLabel, BorderLayout.CENTER);
-				System.out.println("lol");
-			}
-
-		} else {
-			//when pictures from the server are available
+			// when pictures from the server are available
 			byte[] b = pictures.get(cellText);
 			ImageIcon icon = new ImageIcon(b);
 			JLabel textLabel = new JLabel(cellText);
 			JLabel iconLabel = new JLabel(icon);
 
 			textLabel.setFont(list.getFont());
-			textLabel.setHorizontalAlignment(textLabel.CENTER);
+			textLabel.setHorizontalAlignment(SwingConstants.CENTER);
 			add(textLabel, BorderLayout.CENTER);
 			add(iconLabel, BorderLayout.WEST);
+
 		}
 		return this;
 	}
@@ -89,9 +56,4 @@ public class JListRenderer extends JPanel implements ListCellRenderer<Object> {
 	public void setPictures(HashMap<String, byte[]> m) {
 		pictures = m;
 	}
-
-	// public void setImageIcon(byte[] b){
-	// icon
-	// }
-
 }

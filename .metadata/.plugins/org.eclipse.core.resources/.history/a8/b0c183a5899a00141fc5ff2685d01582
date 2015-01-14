@@ -1,0 +1,69 @@
+package logic;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.net.InetAddress;
+import java.net.InetSocketAddress;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.util.HashMap;
+
+import javax.swing.JOptionPane;
+
+public class ServerLogic {
+
+	private ServerSocket server;
+	private HashMap clients;
+	private DataInputStream inStream;
+	private DataOutputStream outStream;
+	private final String ip = "87.173.90.234";
+
+	public ServerLogic(int port) {
+//		System.setProperty("java.net.preferIPv4Stack" , "true");
+		try {
+			InetAddress address = InetAddress.getByName(ip);
+			server = new ServerSocket(port, 0, address);
+//			server.bind(new InetSocketAddress(ip, port));
+			clients = new HashMap<String, Socket>();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}// constructor
+
+	public void acceptRoutine() throws IOException {
+		while (true) {
+			// Auf neuen Client warten
+			Socket tempClient = server.accept();
+			System.out.println("new socket acceoted");
+			ProcessingThread t = new ProcessingThread(tempClient, clients);
+			t.setDaemon(true);
+			t.start();
+		}
+
+		// Thread processingThread = new Thread() {
+		// @Override
+		// public void run() {
+		//
+		// }
+		// };
+
+		// System.out.println("gay");
+		// String received = inStream.readUTF();
+		// System.out.println("blub");
+		// received = received + " server erhalten ";
+		// outStream.writeUTF(received);
+		// outStream.close();
+		// inStream.close();
+		// client.close();
+	}
+
+	public static void main(String args[]) throws IOException {
+		ServerLogic s = new ServerLogic(5000);
+		System.out.println("server build");
+		JOptionPane.showMessageDialog(null, "Server läuft");
+		s.acceptRoutine();
+		
+	}
+
+}

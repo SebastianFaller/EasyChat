@@ -1,65 +1,50 @@
 package logic;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.InetAddress;
+import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.HashMap;
-import java.util.regex.Pattern;
 
 import javax.swing.JOptionPane;
 
 public class ServerLogic {
 
 	private ServerSocket server;
-	private HashMap clients;
-	private DataInputStream inStream;
-	private DataOutputStream outStream;
+	private HashMap<String, Socket> clients;
+	private static final String ip = "localhost";//87.173.90.234
+	private static final int port = 10300;
 
-	public ServerLogic(int port) {
+	public ServerLogic() {
+		//if ipv4 is necessary 
+		//System.setProperty("java.net.preferIPv4Stack" , "true");
 		try {
-			server = new ServerSocket(port);
+			InetAddress address = InetAddress.getByName(ip);
+			server = new ServerSocket();
+			server.bind(new InetSocketAddress(address, ServerLogic.port));
 			clients = new HashMap<String, Socket>();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}// constructor
 
 	public void acceptRoutine() throws IOException {
 		while (true) {
-			// Auf neuen Client warten
+			// Wait for new Client
 			Socket tempClient = server.accept();
-			
+			System.out.println("new socket accepted");
 			ProcessingThread t = new ProcessingThread(tempClient, clients);
 			t.setDaemon(true);
+			//start Thread to get free for new incoming clients
 			t.start();
 		}
-
-		// Thread processingThread = new Thread() {
-		// @Override
-		// public void run() {
-		//
-		// }
-		// };
-
-		// System.out.println("gay");
-		// String received = inStream.readUTF();
-		// System.out.println("blub");
-		// received = received + " server erhalten ";
-		// outStream.writeUTF(received);
-		// outStream.close();
-		// inStream.close();
-		// client.close();
 	}
 
 	public static void main(String args[]) throws IOException {
-		ServerLogic s = new ServerLogic(1025);
+		ServerLogic s = new ServerLogic();
 		System.out.println("server build");
 		JOptionPane.showMessageDialog(null, "Server läuft");
-		s.acceptRoutine();
-		
+		s.acceptRoutine();	
 	}
 
 }

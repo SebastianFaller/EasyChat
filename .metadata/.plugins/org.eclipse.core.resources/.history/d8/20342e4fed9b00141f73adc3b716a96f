@@ -1,0 +1,9 @@
+package ui;
+
+public interface ChatWindowInterface extends clientUiInterface{
+	
+	public String getCurrentChatPartner();
+	
+	public void displayMessage(String message, String sender);
+
+}

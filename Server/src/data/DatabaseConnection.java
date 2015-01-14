@@ -22,13 +22,11 @@ public class DatabaseConnection {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		try {
 			connection = DriverManager.getConnection(DatabaseUrl, sqlUser, sqlPassword);	
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -52,7 +50,7 @@ public class DatabaseConnection {
 		}
 	}
 	
-	private void closeDatabaseConnection() throws SQLException{
+	public void closeDatabaseConnection() throws SQLException{
 		
 		if(connection!=null){
 			connection.close();

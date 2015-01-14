@@ -3,3 +3,35 @@
 1421018286046	Rename local variable 'name'
 1421018308748	Rename local variable 'newText'
 1421020250124	Extract local variable 'jList'
+1421229032652	Delete element
+1421229599721	Rename method 'clientSendAndReceive'
+1421231748766	Rename method 'logInAtServer'
+1421231870827	Rename local variable 'pwd'
+1421232128199	Rename method 'changeCurrentUser'
+1421232185929	Rename field 'textMap'
+1421232728520	Rename method 'displayMessage'
+1421238440005	Rename local variable 'adressee'
+1421238533735	Rename local variable 'adressee'
+1421238756580	Rename local variable 'byteArray'
+1421238987232	Rename local variable 'picLenght'
+1421239100797	Rename local variable 'pw'
+1421239108849	Rename local variable 'pwd'
+1421239481732	Rename local variable 'toAdd'
+1421239688642	Rename field 'p'
+1421240527691	Rename local variable 'arrayList'
+1421242702022	Delete element
+1421243679573	Delete element
+1421243689843	Delete element
+1421243738949	Delete element
+1421243895562	Rename local variable 'logic'
+1421243908419	Rename field 'logic'
+1421244118684	Rename type 'clientUiInterface'
+1421244274004	Delete element
+1421244308633	Delete element
+1421244589757	Move type 'RegistrationWindowInterface' to new file
+1421244600159	Move type 'LoginWindowInterface' to new file
+1421244611501	Move type 'ChatWindowInterface' to new file
+1421244910773	Rename method 'setText'
+1421244919138	Rename method 'getText'
+1421245716680	Delete element
+1421245848766	Delete element
